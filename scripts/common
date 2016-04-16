@@ -51,6 +51,10 @@ on_chroot() {
 	if ! mount | grep -q `realpath ${ROOTFS_DIR***REMOVED***/dev`; then
 		mount --bind /dev ${ROOTFS_DIR***REMOVED***/dev
 	fi
+	
+	if ! mount | grep -q `realpath ${ROOTFS_DIR***REMOVED***/dev/pts`; then
+		mount --bind /dev/pts ${ROOTFS_DIR***REMOVED***/dev/pts
+	fi
 
 	if ! mount | grep -q `realpath ${ROOTFS_DIR***REMOVED***/sys`; then
 		mount --bind /sys ${ROOTFS_DIR***REMOVED***/sys
