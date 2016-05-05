@@ -43,11 +43,12 @@ apt-get install -y $PACKAGES
 			fi
 			QUILT_PATCHES=${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-patches
 			mkdir -p ${i***REMOVED***-pc
-			ln -sf .pc ${i***REMOVED***-pc
+			ln -sf ${i***REMOVED***-pc .pc
 			if [ -e ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-patches/EDIT ]; then
 				echo "Dropping into bash to edit patches..."
 				bash
 			fi
+			quilt upgrade
 			RC=0
 			quilt push -a || RC=$?
 			case "$RC" in
@@ -77,10 +78,14 @@ apt-get install -y $PACKAGES
 
 run_stage(){
 	log "Begin ${STAGE_DIR***REMOVED***"
+	STAGE=$(basename ${STAGE_DIR***REMOVED***)
 	pushd ${STAGE_DIR***REMOVED*** > /dev/null
 	unmount ${WORK_DIR***REMOVED***/${STAGE***REMOVED***
 	STAGE_WORK_DIR=${WORK_DIR***REMOVED***/${STAGE***REMOVED***
 	ROOTFS_DIR=${STAGE_WORK_DIR***REMOVED***/rootfs
+	if [ -f ${STAGE_DIR***REMOVED***/EXPORT_IMAGE ]; then
+		EXPORT_DIRS="${EXPORT_DIRS***REMOVED*** ${STAGE_DIR***REMOVED***"
+	fi
 	if [ ! -f SKIP ]; then
 		if [ "${CLEAN***REMOVED***" = "1" ]; then
 			if [ -d ${ROOTFS_DIR***REMOVED*** ]; then
@@ -93,7 +98,8 @@ run_stage(){
 			log "End ${STAGE_DIR***REMOVED***/prerun.sh"
 		fi
 		for SUB_STAGE_DIR in ${STAGE_DIR***REMOVED***/*; do
-			if [ -d ${SUB_STAGE_DIR***REMOVED*** ]; then
+			if [ -d ${SUB_STAGE_DIR***REMOVED*** ] &&
+			   [ ! -f ${SUB_STAGE_DIR***REMOVED***/SKIP ]; then
 				run_sub_stage
 			fi
 		done
@@ -125,6 +131,7 @@ export IMG_DATE=${IMG_DATE:-"$(date -u +%Y-%m-%d)"***REMOVED***
 export BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]***REMOVED***")" && pwd)"
 export SCRIPT_DIR="${BASE_DIR***REMOVED***/scripts"
 export WORK_DIR="${BASE_DIR***REMOVED***/work/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"
+export DEPLOY_DIR="${BASE_DIR***REMOVED***/deploy"
 export LOG_FILE="${WORK_DIR***REMOVED***/build.log"
 
 export CLEAN
@@ -132,11 +139,15 @@ export IMG_NAME
 export APT_PROXY
 
 export STAGE
-export PREV_STAGE
 export STAGE_DIR
+export STAGE_WORK_DIR
+export PREV_STAGE
 export PREV_STAGE_DIR
 export ROOTFS_DIR
 export PREV_ROOTFS_DIR
+export IMG_SUFFIX
+export EXPORT_DIR
+export EXPORT_ROOTFS_DIR
 
 export QUILT_PATCHES
 export QUILT_NO_DIFF_INDEX=1
@@ -144,18 +155,20 @@ export QUILT_NO_DIFF_TIMESTAMPS=1
 export QUILT_REFRESH_ARGS="-p ab"
 
 source ${SCRIPT_DIR***REMOVED***/common
-export -f log
-export -f bootstrap
-export -f unmount
-export -f on_chroot
-export -f copy_previous
-export -f update_issue
 
 mkdir -p ${WORK_DIR***REMOVED***
 log "Begin ${BASE_DIR***REMOVED***"
 
 for STAGE_DIR in ${BASE_DIR***REMOVED***/stage*; do
-	STAGE=$(basename ${STAGE_DIR***REMOVED***)
+	run_stage
+done
+
+STAGE_DIR=${BASE_DIR***REMOVED***/export-image
+
+CLEAN=1
+for EXPORT_DIR in ${EXPORT_DIRS***REMOVED***; do
+	IMG_SUFFIX=$(cat ${EXPORT_DIR***REMOVED***/EXPORT_IMAGE)
+	EXPORT_ROOTFS_DIR=${WORK_DIR***REMOVED***/$(basename ${EXPORT_DIR***REMOVED***)/rootfs
 	run_stage
 done
 
