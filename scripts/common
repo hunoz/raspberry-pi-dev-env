@@ -83,6 +83,6 @@ export -f on_chroot
 
 update_issue() {
 	GIT_HASH=$(git rev-parse HEAD)
-	echo -e "Raspberry Pi reference ${DATE***REMOVED***\nGenerated using pi-gen, https://github.com/RPi-Distro/pi-gen, ${GIT_HASH***REMOVED***, ${1***REMOVED***" > ${ROOTFS_DIR***REMOVED***/etc/rpi-issue
+	echo -e "Raspberry Pi reference ${IMG_DATE***REMOVED***\nGenerated using pi-gen, https://github.com/RPi-Distro/pi-gen, ${GIT_HASH***REMOVED***, ${1***REMOVED***" > ${ROOTFS_DIR***REMOVED***/etc/rpi-issue
 ***REMOVED***
 export -f update_issue
