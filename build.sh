@@ -43,11 +43,12 @@ apt-get install -y $PACKAGES
 			fi
 			QUILT_PATCHES=${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-patches
 			mkdir -p ${i***REMOVED***-pc
-			ln -sf .pc ${i***REMOVED***-pc
+			ln -sf ${i***REMOVED***-pc .pc
 			if [ -e ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-patches/EDIT ]; then
 				echo "Dropping into bash to edit patches..."
 				bash
 			fi
+			quilt upgrade
 			RC=0
 			quilt push -a || RC=$?
 			case "$RC" in
