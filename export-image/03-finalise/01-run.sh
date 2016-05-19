@@ -4,6 +4,7 @@ IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REM
 
 on_chroot sh -e - <<***REMOVED***
 /etc/init.d/fake-hwclock stop
+hardlink -t /usr/share/doc
 ***REMOVED***
 
 rm -f ${ROOTFS_DIR***REMOVED***/etc/apt/apt.conf.d/51cache
