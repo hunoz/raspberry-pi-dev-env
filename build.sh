@@ -163,13 +163,16 @@ for STAGE_DIR in ${BASE_DIR***REMOVED***/stage*; do
 	run_stage
 done
 
-STAGE_DIR=${BASE_DIR***REMOVED***/export-image
-
 CLEAN=1
 for EXPORT_DIR in ${EXPORT_DIRS***REMOVED***; do
+	STAGE_DIR=${BASE_DIR***REMOVED***/export-image
 	IMG_SUFFIX=$(cat ${EXPORT_DIR***REMOVED***/EXPORT_IMAGE)
 	EXPORT_ROOTFS_DIR=${WORK_DIR***REMOVED***/$(basename ${EXPORT_DIR***REMOVED***)/rootfs
 	run_stage
+	if [ -e ${EXPORT_DIR***REMOVED***/EXPORT_NOOBS ]; then
+		STAGE_DIR=${BASE_DIR***REMOVED***/export-noobs
+		run_stage
+	fi
 done
 
 log "End ${BASE_DIR***REMOVED***"
