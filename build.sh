@@ -16,7 +16,8 @@ SEL***REMOVED***
 		fi
 		if [ -f ${i***REMOVED***-packages-nr ]; then
 			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages-nr"
-			PACKAGES=`cat $i-packages-nr | tr '\n' ' '`
+			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < ${i***REMOVED***-packages-nr)"
+			PACKAGES="$(sed -e "$sed_expr_packages" < ${i***REMOVED***-packages-nr)"
 			if [ -n "$PACKAGES" ]; then
 				on_chroot sh -e - << ***REMOVED***
 apt-get install --no-install-recommends -y $PACKAGES
@@ -26,7 +27,7 @@ apt-get install --no-install-recommends -y $PACKAGES
 		fi
 		if [ -f ${i***REMOVED***-packages ]; then
 			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages"
-			PACKAGES=`cat $i-packages | tr '\n' ' '`
+			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < ${i***REMOVED***-packages)"
 			if [ -n "$PACKAGES" ]; then
 				on_chroot sh -e - << ***REMOVED***
 apt-get install -y $PACKAGES
@@ -76,6 +77,7 @@ apt-get install -y $PACKAGES
 	popd > /dev/null
 	log "End ${SUB_STAGE_DIR***REMOVED***"
 ***REMOVED***
+
 
 run_stage(){
 	log "Begin ${STAGE_DIR***REMOVED***"
