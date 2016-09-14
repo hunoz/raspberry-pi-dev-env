@@ -17,7 +17,6 @@ SEL***REMOVED***
 		if [ -f ${i***REMOVED***-packages-nr ]; then
 			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages-nr"
 			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < ${i***REMOVED***-packages-nr)"
-			PACKAGES="$(sed -e "$sed_expr_packages" < ${i***REMOVED***-packages-nr)"
 			if [ -n "$PACKAGES" ]; then
 				on_chroot sh -e - << ***REMOVED***
 apt-get install --no-install-recommends -y $PACKAGES
@@ -158,6 +157,10 @@ export QUILT_NO_DIFF_TIMESTAMPS=1
 export QUILT_REFRESH_ARGS="-p ab"
 
 source ${SCRIPT_DIR***REMOVED***/common
+source ${SCRIPT_DIR***REMOVED***/dependencies_check
+
+
+dependencies_check ${BASE_DIR***REMOVED***/depends
 
 mkdir -p ${WORK_DIR***REMOVED***
 log "Begin ${BASE_DIR***REMOVED***"
