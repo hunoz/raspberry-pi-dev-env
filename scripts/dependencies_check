@@ -10,7 +10,7 @@ dependencies_check()
 
 	for depfile in "$@"; do
 		if [[ -e "$depfile" ]]; then
-			deps="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < ${BASE_DIR***REMOVED***/depends"
+			deps="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < ${BASE_DIR***REMOVED***/depends)"
 
 		fi
 		for dep in $deps; do
