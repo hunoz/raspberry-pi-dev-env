@@ -88,24 +88,22 @@ run_stage(){
 	if [ -f ${STAGE_DIR***REMOVED***/EXPORT_IMAGE ]; then
 		EXPORT_DIRS="${EXPORT_DIRS***REMOVED*** ${STAGE_DIR***REMOVED***"
 	fi
-	if [ ! -f SKIP ]; then
-		if [ "${CLEAN***REMOVED***" = "1" ]; then
-			if [ -d ${ROOTFS_DIR***REMOVED*** ]; then
-				rm -rf ${ROOTFS_DIR***REMOVED***
-			fi
+	if [ "${CLEAN***REMOVED***" = "1" ]; then
+		if [ -d ${ROOTFS_DIR***REMOVED*** ]; then
+			rm -rf ${ROOTFS_DIR***REMOVED***
 		fi
-		if [ -x prerun.sh ]; then
-			log "Begin ${STAGE_DIR***REMOVED***/prerun.sh"
-			./prerun.sh
-			log "End ${STAGE_DIR***REMOVED***/prerun.sh"
-		fi
-		for SUB_STAGE_DIR in ${STAGE_DIR***REMOVED***/*; do
-			if [ -d ${SUB_STAGE_DIR***REMOVED*** ] &&
-			   [ ! -f ${SUB_STAGE_DIR***REMOVED***/SKIP ]; then
-				run_sub_stage
-			fi
-		done
 	fi
+	if [ -x prerun.sh ]; then
+		log "Begin ${STAGE_DIR***REMOVED***/prerun.sh"
+		./prerun.sh
+		log "End ${STAGE_DIR***REMOVED***/prerun.sh"
+	fi
+	for SUB_STAGE_DIR in ${STAGE_DIR***REMOVED***/*; do
+		if [ -d ${SUB_STAGE_DIR***REMOVED*** ] &&
+			[ ! -f ${SUB_STAGE_DIR***REMOVED***/SKIP ]; then
+			run_sub_stage
+		fi
+	done
 	unmount ${WORK_DIR***REMOVED***/${STAGE***REMOVED***
 	PREV_STAGE=${STAGE***REMOVED***
 	PREV_STAGE_DIR=${STAGE_DIR***REMOVED***
@@ -126,6 +124,12 @@ fi
 if [ -z "${IMG_NAME***REMOVED***" ]; then
 	echo "IMG_NAME not set" 1>&2
 	exit 1
+fi
+
+if [ -n "${RUN_STAGE***REMOVED***" ]; then
+	echo "Running ONLY stage${RUN_STAGE***REMOVED***"
+elif [ -n "${MAX_STAGE***REMOVED***" ]; then
+	echo "Running stage${MAX_STAGE***REMOVED*** build"
 fi
 
 export IMG_DATE=${IMG_DATE:-"$(date -u +%Y-%m-%d)"***REMOVED***
@@ -166,7 +170,12 @@ mkdir -p ${WORK_DIR***REMOVED***
 log "Begin ${BASE_DIR***REMOVED***"
 
 for STAGE_DIR in ${BASE_DIR***REMOVED***/stage*; do
-	run_stage
+	STAGE_DIR_NUM=$(echo $STAGE_DIR | grep -o -E "[0-9]+$")
+	if [[ (-z $RUN_STAGE || $STAGE_DIR_NUM -eq $RUN_STAGE) && (-z $MAX_STAGE || $STAGE_DIR_NUM -le $MAX_STAGE) ]]; then
+		run_stage
+	else
+		echo "Skipping ${STAGE_DIR***REMOVED***"
+	fi
 done
 
 CLEAN=1
