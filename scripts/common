@@ -27,7 +27,7 @@ copy_previous(){
 		false
 	fi
 	mkdir -p ${ROOTFS_DIR***REMOVED***
-	rsync -aHAX ${PREV_ROOTFS_DIR***REMOVED***/ ${ROOTFS_DIR***REMOVED***/
+	rsync -aHAXx ${PREV_ROOTFS_DIR***REMOVED***/ ${ROOTFS_DIR***REMOVED***/
 ***REMOVED***
 export -f copy_previous
 
