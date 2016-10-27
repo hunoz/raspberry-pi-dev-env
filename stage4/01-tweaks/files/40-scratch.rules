@@ -1,1 +1,0 @@
-ATTRS{idVendor***REMOVED***=="0694", ATTRS{idProduct***REMOVED***=="0003", SUBSYSTEMS=="usb", ACTION=="add", MODE="0666", GROUP="plugdev"
