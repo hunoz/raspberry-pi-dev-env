@@ -7,6 +7,10 @@ on_chroot sh -e - <<***REMOVED***
 hardlink -t /usr/share/doc
 ***REMOVED***
 
+if [ -d ${ROOTFS_DIR***REMOVED***/home/pi/.config ]; then
+	chmod 700 ${ROOTFS_DIR***REMOVED***/home/pi/.config
+fi
+
 rm -f ${ROOTFS_DIR***REMOVED***/etc/apt/apt.conf.d/51cache
 rm -f ${ROOTFS_DIR***REMOVED***/usr/sbin/policy-rc.d
 rm -f ${ROOTFS_DIR***REMOVED***/usr/bin/qemu-arm-static
