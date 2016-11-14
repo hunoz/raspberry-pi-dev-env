@@ -1,5 +1,5 @@
 ***REMOVED***
 
-on_chroot sh -e - <<***REMOVED***
+on_chroot << ***REMOVED***
 apt-get clean
 ***REMOVED***

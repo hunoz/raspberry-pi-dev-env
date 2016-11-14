@@ -11,7 +11,7 @@ else
 fi
 
 on_chroot apt-key add - < files/raspberrypi.gpg.key
-on_chroot sh -e - << ***REMOVED***
+on_chroot << ***REMOVED***
 apt-get update
 apt-get dist-upgrade -y
 ***REMOVED***

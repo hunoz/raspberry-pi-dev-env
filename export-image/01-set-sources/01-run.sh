@@ -1,6 +1,6 @@
 ***REMOVED***
 
-on_chroot sh -e - <<***REMOVED***
+on_chroot << ***REMOVED***
 apt-get update
 apt-get -y dist-upgrade
 apt-get clean

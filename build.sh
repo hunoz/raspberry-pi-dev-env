@@ -7,7 +7,7 @@ run_sub_stage()
 	for i in {00..99***REMOVED***; do
 		if [ -f ${i***REMOVED***-debconf ]; then
 			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-debconf"
-			on_chroot sh -e - << ***REMOVED***
+			on_chroot << ***REMOVED***
 debconf-set-selections <<SEL***REMOVED***
 `cat ${i***REMOVED***-debconf`
 SEL***REMOVED***
@@ -18,7 +18,7 @@ SEL***REMOVED***
 			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages-nr"
 			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < ${i***REMOVED***-packages-nr)"
 			if [ -n "$PACKAGES" ]; then
-				on_chroot sh -e - << ***REMOVED***
+				on_chroot << ***REMOVED***
 apt-get install --no-install-recommends -y $PACKAGES
 ***REMOVED***
 			fi
@@ -28,7 +28,7 @@ apt-get install --no-install-recommends -y $PACKAGES
 			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages"
 			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < ${i***REMOVED***-packages)"
 			if [ -n "$PACKAGES" ]; then
-				on_chroot sh -e - << ***REMOVED***
+				on_chroot << ***REMOVED***
 apt-get install -y $PACKAGES
 ***REMOVED***
 			fi
@@ -69,7 +69,7 @@ apt-get install -y $PACKAGES
 		fi
 		if [ -f ${i***REMOVED***-run-chroot ]; then
 			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run-chroot"
-			on_chroot sh -e - < ${i***REMOVED***-run-chroot
+			on_chroot < ${i***REMOVED***-run-chroot
 			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run-chroot"
 		fi
 	done

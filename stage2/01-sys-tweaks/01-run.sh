@@ -10,7 +10,7 @@ install -m 644 files/ttyoutput.conf			${ROOTFS_DIR***REMOVED***/etc/systemd/syst
 install -m 644 files/50raspi				${ROOTFS_DIR***REMOVED***/etc/apt/apt.conf.d/
 
 
-on_chroot sh -e - <<***REMOVED***
+on_chroot << ***REMOVED***
 systemctl disable hwclock.sh
 systemctl disable nfs-common
 systemctl disable rpcbind
@@ -20,7 +20,7 @@ systemctl enable apply_noobs_os_config
 systemctl enable resize2fs_once
 ***REMOVED***
 
-on_chroot sh -e - << \***REMOVED***
+on_chroot << \***REMOVED***
 for GRP in input spi i2c gpio; do
 	groupadd -f -r $GRP
 done
@@ -29,11 +29,11 @@ for GRP in adm dialout cdrom audio users sudo video games plugdev input gpio spi
 done
 ***REMOVED***
 
-on_chroot sh -e - <<***REMOVED***
+on_chroot << ***REMOVED***
 setupcon --force --save-only -v
 ***REMOVED***
 
-on_chroot sh -e - <<***REMOVED***
+on_chroot << ***REMOVED***
 usermod --pass='*' root
 ***REMOVED***
 

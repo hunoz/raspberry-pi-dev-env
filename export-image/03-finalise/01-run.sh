@@ -2,7 +2,7 @@
 
 IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 
-on_chroot sh -e - <<***REMOVED***
+on_chroot << ***REMOVED***
 /etc/init.d/fake-hwclock stop
 hardlink -t /usr/share/doc
 ***REMOVED***
