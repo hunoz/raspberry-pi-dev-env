@@ -1,6 +1,6 @@
 ***REMOVED***
 
-install -m 755 files/regenerate_ssh_host_keys		${ROOTFS_DIR***REMOVED***/etc/init.d/
+install -m 644 files/regenerate_ssh_host_keys.service	${ROOTFS_DIR***REMOVED***/lib/systemd/system/
 install -m 755 files/apply_noobs_os_config		${ROOTFS_DIR***REMOVED***/etc/init.d/
 install -m 755 files/resize2fs_once			${ROOTFS_DIR***REMOVED***/etc/init.d/
 
