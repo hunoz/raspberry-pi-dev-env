@@ -20,6 +20,7 @@ mount $ROOT_DEV ${STAGE_WORK_DIR***REMOVED***/rootfs
 mount $BOOT_DEV ${STAGE_WORK_DIR***REMOVED***/rootfs/boot
 
 bsdtar --format gnutar --use-compress-program pxz -C ${STAGE_WORK_DIR***REMOVED***/rootfs/boot -cpf ${NOOBS_DIR***REMOVED***/boot.tar.xz .
+umount ${STAGE_WORK_DIR***REMOVED***/rootfs/boot
 bsdtar --format gnutar --use-compress-program pxz -C ${STAGE_WORK_DIR***REMOVED***/rootfs --one-file-system -cpf ${NOOBS_DIR***REMOVED***/root.tar.xz .
 
 unmount_image ${IMG_FILE***REMOVED***
