@@ -1,10 +1,11 @@
 log (){
-	date +"[%T] $@" | tee -a ${LOG_FILE***REMOVED***
+	date +"[%T] $@" | tee -a "${LOG_FILE***REMOVED***"
 ***REMOVED***
 export -f log
 
 bootstrap(){
-	local ARCH=$(dpkg --print-architecture)
+	local ARCH
+	ARCH=$(dpkg --print-architecture)
 
 	export http_proxy=${APT_PROXY***REMOVED***
 
@@ -22,12 +23,12 @@ bootstrap(){
 export -f bootstrap
 
 copy_previous(){
-	if [ ! -d ${PREV_ROOTFS_DIR***REMOVED*** ]; then
+	if [ ! -d "${PREV_ROOTFS_DIR***REMOVED***" ]; then
 		echo "Previous stage rootfs not found"
 		false
 	fi
-	mkdir -p ${ROOTFS_DIR***REMOVED***
-	rsync -aHAXx ${PREV_ROOTFS_DIR***REMOVED***/ ${ROOTFS_DIR***REMOVED***/
+	mkdir -p "${ROOTFS_DIR***REMOVED***"
+	rsync -aHAXx "${PREV_ROOTFS_DIR***REMOVED***/" "${ROOTFS_DIR***REMOVED***/"
 ***REMOVED***
 export -f copy_previous
 
@@ -38,10 +39,11 @@ unmount(){
 		DIR=$1
 	fi
 
-	while mount | grep -q $DIR; do
-		local LOCS=`mount | grep $DIR | cut -f 3 -d ' ' | sort -r`
+	while mount | grep -q "$DIR"; do
+		local LOCS
+		LOCS=$(mount | grep "$DIR" | cut -f 3 -d ' ' | sort -r)
 		for loc in $LOCS; do
-			umount $loc
+			umount "$loc"
 		done
 	done
 ***REMOVED***
@@ -50,42 +52,47 @@ export -f unmount
 unmount_image(){
 	sync
 	sleep 1
-	local LOOP_DEV=$(losetup -j ${1***REMOVED*** | cut -f1 -d':')
-	if [ -n "${LOOP_DEV***REMOVED***" ]; then
-		local MOUNTED_DIR=$(mount | grep $(basename ${LOOP_DEV***REMOVED***) | head -n 1 | cut -f 3 -d ' ')
-		if [ -n "${MOUNTED_DIR***REMOVED***" ]; then
-			unmount $(dirname ${MOUNTED_DIR***REMOVED***)
+	local LOOP_DEVICES
+	LOOP_DEVICES=$(losetup -j "${1***REMOVED***" | cut -f1 -d':')
+	for LOOP_DEV in ${LOOP_DEVICES***REMOVED***; do
+		if [ -n "${LOOP_DEV***REMOVED***" ]; then
+			local MOUNTED_DIR
+			MOUNTED_DIR=$(mount | grep "$(basename "${LOOP_DEV***REMOVED***")" | head -n 1 | cut -f 3 -d ' ')
+			if [ -n "${MOUNTED_DIR***REMOVED***" ] && [ "${MOUNTED_DIR***REMOVED***" != "/" ]; then
+				unmount "$(dirname "${MOUNTED_DIR***REMOVED***")"
+			fi
+			sleep 1
+			losetup -d "${LOOP_DEV***REMOVED***"
 		fi
-		sleep 1
-		kpartx -ds ${LOOP_DEV***REMOVED***
-		losetup -d ${LOOP_DEV***REMOVED***
-	fi
+	done
 ***REMOVED***
 export -f unmount_image
 
 on_chroot() {
-	if ! mount | grep -q `realpath ${ROOTFS_DIR***REMOVED***/proc`; then
-		mount -t proc proc ${ROOTFS_DIR***REMOVED***/proc
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/proc)"; then
+		mount -t proc proc "${ROOTFS_DIR***REMOVED***/proc"
 	fi
 
-	if ! mount | grep -q `realpath ${ROOTFS_DIR***REMOVED***/dev`; then
-		mount --bind /dev ${ROOTFS_DIR***REMOVED***/dev
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/dev)"; then
+		mount --bind /dev "${ROOTFS_DIR***REMOVED***/dev"
 	fi
 	
-	if ! mount | grep -q `realpath ${ROOTFS_DIR***REMOVED***/dev/pts`; then
-		mount --bind /dev/pts ${ROOTFS_DIR***REMOVED***/dev/pts
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/dev/pts)"; then
+		mount --bind /dev/pts "${ROOTFS_DIR***REMOVED***/dev/pts"
 	fi
 
-	if ! mount | grep -q `realpath ${ROOTFS_DIR***REMOVED***/sys`; then
-		mount --bind /sys ${ROOTFS_DIR***REMOVED***/sys
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/sys)"; then
+		mount --bind /sys "${ROOTFS_DIR***REMOVED***/sys"
 	fi
 
-	capsh --drop=cap_setfcap --chroot=${ROOTFS_DIR***REMOVED***/ -- "$@"
+	capsh --drop=cap_setfcap "--chroot=${ROOTFS_DIR***REMOVED***/" -- "$@"
 ***REMOVED***
 export -f on_chroot
 
 update_issue() {
-	local GIT_HASH=$(git rev-parse HEAD)
-	echo -e "Raspberry Pi reference ${IMG_DATE***REMOVED***\nGenerated using pi-gen, https://github.com/RPi-Distro/pi-gen, ${GIT_HASH***REMOVED***, ${1***REMOVED***" > ${ROOTFS_DIR***REMOVED***/etc/rpi-issue
+	local GIT_HASH
+	GIT_HASH=$(git rev-parse HEAD)
+	echo -e "Raspberry Pi reference ${IMG_DATE***REMOVED***\nGenerated using pi-gen, https://github.com/RPi-Distro/pi-gen, ${GIT_HASH***REMOVED***, ${1***REMOVED***" > "${ROOTFS_DIR***REMOVED***/etc/rpi-issue"
 ***REMOVED***
 export -f update_issue
+

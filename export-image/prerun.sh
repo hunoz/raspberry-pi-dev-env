@@ -34,9 +34,21 @@ p
 w
 ***REMOVED***
 
-LOOP_DEV=`kpartx -asv ${IMG_FILE***REMOVED*** | grep -E -o -m1 'loop[[:digit:]]+' | head -n 1`
-BOOT_DEV=/dev/mapper/${LOOP_DEV***REMOVED***p1
-ROOT_DEV=/dev/mapper/${LOOP_DEV***REMOVED***p2
+PARTED_OUT=$(parted -s ${IMG_FILE***REMOVED*** unit b print)
+BOOT_OFFSET=$(echo "$PARTED_OUT" | grep -e '^ 1'| xargs echo -n \
+| cut -d" " -f 2 | tr -d B)
+BOOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^ 1'| xargs echo -n \
+| cut -d" " -f 4 | tr -d B)
+
+ROOT_OFFSET=$(echo "$PARTED_OUT" | grep -e '^ 2'| xargs echo -n \
+| cut -d" " -f 2 | tr -d B)
+ROOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^ 2'| xargs echo -n \
+| cut -d" " -f 4 | tr -d B)
+
+BOOT_DEV=$(losetup --show -f -o ${BOOT_OFFSET***REMOVED*** --sizelimit ${BOOT_LENGTH***REMOVED*** ${IMG_FILE***REMOVED***)
+ROOT_DEV=$(losetup --show -f -o ${ROOT_OFFSET***REMOVED*** --sizelimit ${ROOT_LENGTH***REMOVED*** ${IMG_FILE***REMOVED***)
+echo "/boot: offset $BOOT_OFFSET, length $BOOT_LENGTH"
+echo "/:     offset $ROOT_OFFSET, length $ROOT_LENGTH"
 
 mkdosfs -n boot -S 512 -s 16 -v $BOOT_DEV > /dev/null
 mkfs.ext4 -O ^huge_file $ROOT_DEV > /dev/null
