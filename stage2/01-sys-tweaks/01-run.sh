@@ -9,6 +9,7 @@ install -m 644 files/ttyoutput.conf			${ROOTFS_DIR***REMOVED***/etc/systemd/syst
 
 install -m 644 files/50raspi				${ROOTFS_DIR***REMOVED***/etc/apt/apt.conf.d/
 
+install -m 644 files/console-setup   			${ROOTFS_DIR***REMOVED***/etc/default/
 
 on_chroot << ***REMOVED***
 systemctl disable hwclock.sh
