@@ -67,10 +67,10 @@ apt-get install -y $PACKAGES
 			./${i***REMOVED***-run.sh
 			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run.sh"
 		fi
-		if [ -f ${i***REMOVED***-run-chroot ]; then
-			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run-chroot"
-			on_chroot < ${i***REMOVED***-run-chroot
-			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run-chroot"
+		if [ -f ${i***REMOVED***-run-chroot.sh ]; then
+			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run-chroot.sh"
+			on_chroot < ${i***REMOVED***-run-chroot.sh
+			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run-chroot.sh"
 		fi
 	done
 	popd > /dev/null
