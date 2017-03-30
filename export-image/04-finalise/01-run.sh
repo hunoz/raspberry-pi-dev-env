@@ -18,6 +18,29 @@ if [ -e ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled ]; then
         mv ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload
 fi
 
+rm -f ${ROOTFS_DIR***REMOVED***/etc/apt/sources.list~
+rm -f ${ROOTFS_DIR***REMOVED***/etc/apt/trusted.gpg~
+
+rm -f ${ROOTFS_DIR***REMOVED***/etc/passwd-
+rm -f ${ROOTFS_DIR***REMOVED***/etc/group-
+rm -f ${ROOTFS_DIR***REMOVED***/etc/shadow-
+rm -f ${ROOTFS_DIR***REMOVED***/etc/gshadow-
+
+rm -f ${ROOTFS_DIR***REMOVED***/var/cache/debconf/*-old
+rm -f ${ROOTFS_DIR***REMOVED***/var/lib/dpkg/*-old
+
+rm -f ${ROOTFS_DIR***REMOVED***/usr/share/icons/*/icon-theme.cache
+
+rm -f ${ROOTFS_DIR***REMOVED***/var/lib/dbus/machine-id
+
+true > ${ROOTFS_DIR***REMOVED***/etc/machine-id
+
+for _FILE in $(find ${ROOTFS_DIR***REMOVED***/var/log/ -type f); do
+	true > ${_FILE***REMOVED***
+done
+
+rm -f "${ROOTFS_DIR***REMOVED***/root/.vnc/private.key"
+
 update_issue $(basename ${EXPORT_DIR***REMOVED***)
 install -m 644 ${ROOTFS_DIR***REMOVED***/etc/rpi-issue ${ROOTFS_DIR***REMOVED***/boot/issue.txt
 install files/LICENSE.oracle ${ROOTFS_DIR***REMOVED***/boot/

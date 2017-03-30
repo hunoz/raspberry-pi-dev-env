@@ -8,19 +8,19 @@ rm -f ${IMG_FILE***REMOVED***
 rm -rf ${ROOTFS_DIR***REMOVED***
 mkdir -p ${ROOTFS_DIR***REMOVED***
 
-BOOT_SIZE=$(du -sh ${EXPORT_ROOTFS_DIR***REMOVED***/boot -B M | cut -f 1 | tr -d M)
-TOTAL_SIZE=$(du -sh ${EXPORT_ROOTFS_DIR***REMOVED*** -B M | cut -f 1 | tr -d M)
+BOOT_SIZE=$(du -s ${EXPORT_ROOTFS_DIR***REMOVED***/boot --block-size=1 | cut -f 1)
+TOTAL_SIZE=$(du -s ${EXPORT_ROOTFS_DIR***REMOVED*** --exclude var/cache/apt/archives --block-size=1 | cut -f 1)
 
-IMG_SIZE=$(expr $BOOT_SIZE \* 2 \+ $TOTAL_SIZE \+ 512)M
+IMG_SIZE=$((BOOT_SIZE + TOTAL_SIZE + (400 * 1024 * 1024)))
 
 fallocate -l ${IMG_SIZE***REMOVED*** ${IMG_FILE***REMOVED***
-fdisk ${IMG_FILE***REMOVED*** > /dev/null 2>&1 <<***REMOVED***
+fdisk -H 255 -S 63 ${IMG_FILE***REMOVED*** <<***REMOVED***
 o
 n
 
 
 8192
-+`expr $BOOT_SIZE \* 3`M
++$((BOOT_SIZE * 2 /512))
 p
 t
 c
@@ -57,4 +57,4 @@ mount -v $ROOT_DEV ${ROOTFS_DIR***REMOVED*** -t ext4
 mkdir -p ${ROOTFS_DIR***REMOVED***/boot
 mount -v $BOOT_DEV ${ROOTFS_DIR***REMOVED***/boot -t vfat
 
-rsync -aHAXx ${EXPORT_ROOTFS_DIR***REMOVED***/ ${ROOTFS_DIR***REMOVED***/
+rsync -aHAXx --exclude var/cache/apt/archives ${EXPORT_ROOTFS_DIR***REMOVED***/ ${ROOTFS_DIR***REMOVED***/
