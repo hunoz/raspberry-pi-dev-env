@@ -5,7 +5,7 @@ NOOBS_DIR="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***RE
 install -v -m 744	files/partition_setup.sh	${NOOBS_DIR***REMOVED***/
 install -v		files/partitions.json		${NOOBS_DIR***REMOVED***/
 install -v		files/os.json			${NOOBS_DIR***REMOVED***/
-install -v		files/Raspbian.png		${NOOBS_DIR***REMOVED***/
+install -v		files/OS.png			${NOOBS_DIR***REMOVED***/
 install -v		files/release_notes.txt		${NOOBS_DIR***REMOVED***/
 
 tar -v -c -C		files/marketing			-f ${NOOBS_DIR***REMOVED***/marketing.tar .
@@ -18,6 +18,8 @@ ROOT_SIZE=$(expr ${ROOT_SIZE***REMOVED*** / 1000000 \+ 1)
 
 BOOT_NOM=$(expr ${BOOT_SIZE***REMOVED*** \* 3)
 ROOT_NOM=$(expr ${ROOT_SIZE***REMOVED*** \+ 400)
+
+mv "${NOOBS_DIR***REMOVED***/OS.png" "${NOOBS_DIR***REMOVED***/$(echo ${NOOBS_NAME***REMOVED*** | sed 's/ /_/').png"
 
 sed ${NOOBS_DIR***REMOVED***/partitions.json -i -e "s|BOOT_SIZE|${BOOT_SIZE***REMOVED***|"
 sed ${NOOBS_DIR***REMOVED***/partitions.json -i -e "s|ROOT_SIZE|${ROOT_SIZE***REMOVED***|"
