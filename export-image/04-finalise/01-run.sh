@@ -35,6 +35,8 @@ rm -f ${ROOTFS_DIR***REMOVED***/var/lib/dbus/machine-id
 
 true > ${ROOTFS_DIR***REMOVED***/etc/machine-id
 
+ln -nsf /proc/mounts ${ROOTFS_DIR***REMOVED***/etc/mtab
+
 for _FILE in $(find ${ROOTFS_DIR***REMOVED***/var/log/ -type f); do
 	true > ${_FILE***REMOVED***
 done
