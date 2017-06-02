@@ -128,7 +128,7 @@ if [ -z "${IMG_NAME***REMOVED***" ]; then
 	exit 1
 fi
 
-export IMG_DATE=${IMG_DATE:-"$(date -u +%Y-%m-%d)"***REMOVED***
+export IMG_DATE=${IMG_DATE:-"$(date +%Y-%m-%d)"***REMOVED***
 
 export BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]***REMOVED***")" && pwd)"
 export SCRIPT_DIR="${BASE_DIR***REMOVED***/scripts"
