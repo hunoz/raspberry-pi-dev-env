@@ -1,4 +1,5 @@
 ***REMOVED***
+
 DOCKER="docker"
 set +e
 $DOCKER ps >/dev/null 2>&1

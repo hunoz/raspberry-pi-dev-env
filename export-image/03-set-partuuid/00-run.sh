@@ -1,4 +1,5 @@
 ***REMOVED***
+
 IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 
 IMGID="$(fdisk -l ${IMG_FILE***REMOVED*** | sed -n 's/Disk identifier: 0x\([^ ]*\)/\1/p')"

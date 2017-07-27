@@ -1,4 +1,5 @@
 ***REMOVED***
+
 IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 
 unmount_image ${IMG_FILE***REMOVED***
