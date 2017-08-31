@@ -2,7 +2,7 @@
 
 IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 
-IMGID="$(fdisk -l ${IMG_FILE***REMOVED*** | sed -n 's/Disk identifier: 0x\([^ ]*\)/\1/p')"
+IMGID="$(dd if=${IMG_FILE***REMOVED*** skip=440 bs=1 count=4 2>/dev/null | xxd -e | cut -f 2 -d' ')"
 
 BOOT_PARTUUID="${IMGID***REMOVED***-01"
 ROOT_PARTUUID="${IMGID***REMOVED***-02"
