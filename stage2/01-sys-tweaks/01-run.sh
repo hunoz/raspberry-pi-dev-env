@@ -17,8 +17,28 @@ systemctl disable nfs-common
 systemctl disable rpcbind
 systemctl disable ssh
 systemctl enable regenerate_ssh_host_keys
+***REMOVED***
+
+if [ "${USE_QEMU***REMOVED***" = "1" ]; then
+	echo "enter QEMU mode"
+	install -m 644 files/90-qemu.rules		${ROOTFS_DIR***REMOVED***/etc/udev/rules.d/
+	if [ -e ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled ]; then
+		rm ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled
+		touch ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled
+	fi
+	if [ -e ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload ]; then
+		rm ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload
+		touch ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload
+	fi
+	on_chroot << ***REMOVED***
+systemctl disable resize2fs_once
+***REMOVED***
+	echo "leaving QEMU mode"
+else
+	on_chroot << ***REMOVED***
 systemctl enable resize2fs_once
 ***REMOVED***
+fi
 
 on_chroot << \***REMOVED***
 for GRP in input spi i2c gpio; do

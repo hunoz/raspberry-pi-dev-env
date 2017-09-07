@@ -15,8 +15,10 @@ fi
 rm -f ${ROOTFS_DIR***REMOVED***/etc/apt/apt.conf.d/51cache
 rm -f ${ROOTFS_DIR***REMOVED***/usr/sbin/policy-rc.d
 rm -f ${ROOTFS_DIR***REMOVED***/usr/bin/qemu-arm-static
-if [ -e ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled ]; then
-        mv ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload
+if [ "${USE_QEMU***REMOVED***" != "1" ]; then
+	if [ -e ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled ]; then
+		mv ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload
+	fi
 fi
 
 rm -f ${ROOTFS_DIR***REMOVED***/etc/apt/sources.list~
