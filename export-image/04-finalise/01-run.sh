@@ -45,6 +45,7 @@ for _FILE in $(find ${ROOTFS_DIR***REMOVED***/var/log/ -type f); do
 done
 
 rm -f "${ROOTFS_DIR***REMOVED***/root/.vnc/private.key"
+rm -f "${ROOTFS_DIR***REMOVED***/etc/vnc/updateid"
 
 update_issue $(basename ${EXPORT_DIR***REMOVED***)
 install -m 644 ${ROOTFS_DIR***REMOVED***/etc/rpi-issue ${ROOTFS_DIR***REMOVED***/boot/issue.txt
