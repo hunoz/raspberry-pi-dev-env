@@ -12,7 +12,8 @@ mkdir -p ${ROOTFS_DIR***REMOVED***
 BOOT_SIZE=$(du --apparent-size -s ${EXPORT_ROOTFS_DIR***REMOVED***/boot --block-size=1 | cut -f 1)
 TOTAL_SIZE=$(du --apparent-size -s ${EXPORT_ROOTFS_DIR***REMOVED*** --exclude var/cache/apt/archives --block-size=1 | cut -f 1)
 
-IMG_SIZE=$((BOOT_SIZE + TOTAL_SIZE + (800 * 1024 * 1024)))
+ROUND_SIZE="$((4 * 1024 * 1024))"
+IMG_SIZE=$(((BOOT_SIZE + TOTAL_SIZE + (800 * 1024 * 1024) + ROUND_SIZE) / ROUND_SIZE * ROUND_SIZE))
 
 truncate -s ${IMG_SIZE***REMOVED*** ${IMG_FILE***REMOVED***
 fdisk -H 255 -S 63 ${IMG_FILE***REMOVED*** <<***REMOVED***
