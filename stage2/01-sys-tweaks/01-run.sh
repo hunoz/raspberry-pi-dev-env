@@ -22,14 +22,6 @@ systemctl enable regenerate_ssh_host_keys
 if [ "${USE_QEMU***REMOVED***" = "1" ]; then
 	echo "enter QEMU mode"
 	install -m 644 files/90-qemu.rules		${ROOTFS_DIR***REMOVED***/etc/udev/rules.d/
-	if [ -e ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled ]; then
-		rm ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled
-		touch ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled
-	fi
-	if [ -e ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload ]; then
-		rm ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload
-		touch ${ROOTFS_DIR***REMOVED***/etc/ld.so.preload
-	fi
 	on_chroot << ***REMOVED***
 systemctl disable resize2fs_once
 ***REMOVED***
