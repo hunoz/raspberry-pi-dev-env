@@ -57,7 +57,7 @@ if [ "$CONTAINER_EXISTS" != "" ]; then
 	trap "echo 'got CTRL+C... please wait 5s'; $DOCKER stop -t 5 ${CONTAINER_NAME***REMOVED***_cont" SIGINT SIGTERM
 	time $DOCKER run --rm --privileged \
 		--volumes-from="${CONTAINER_NAME***REMOVED***" --name "${CONTAINER_NAME***REMOVED***_cont" \
-		-e IMG_NAME=${IMG_NAME***REMOVED***\
+		-e IMG_NAME="${IMG_NAME***REMOVED***"\
 		pi-gen \
 		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
 	cd /pi-gen; ./build.sh;
@@ -66,7 +66,7 @@ if [ "$CONTAINER_EXISTS" != "" ]; then
 else
 	trap "echo 'got CTRL+C... please wait 5s'; $DOCKER stop -t 5 ${CONTAINER_NAME***REMOVED***" SIGINT SIGTERM
 	time $DOCKER run --name "${CONTAINER_NAME***REMOVED***" --privileged \
-		-e IMG_NAME=${IMG_NAME***REMOVED***\
+		-e IMG_NAME="${IMG_NAME***REMOVED***"\
 		"${config_file[@]***REMOVED***" \
 		pi-gen \
 		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
