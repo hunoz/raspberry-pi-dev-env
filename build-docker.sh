@@ -21,6 +21,7 @@ fi
 
 CONTAINER_NAME=${CONTAINER_NAME:-pigen_work***REMOVED***
 CONTINUE=${CONTINUE:-0***REMOVED***
+PRESERVE_CONTAINER=${PRESERVE_CONTAINER:-0***REMOVED***
 
 if [ "$*" != "" ] || [ -z "${IMG_NAME***REMOVED***" ]; then
 	if [ -z "${IMG_NAME***REMOVED***" ]; then
@@ -33,6 +34,7 @@ Usage:
 Optional environment arguments: ( =<default> )
     CONTAINER_NAME=pigen_work  set a name for the build container
     CONTINUE=1                 continue from a previously started container
+    PRESERVE_CONTAINER=1       keep build container even on successful build
 ***REMOVED***
 	exit 1
 fi
@@ -75,6 +77,10 @@ fi
 echo "copying results from deploy/"
 $DOCKER cp "${CONTAINER_NAME***REMOVED***":/pi-gen/deploy .
 ls -lah deploy
-$DOCKER rm -v $CONTAINER_NAME
+
+# cleanup
+if [ "$PRESERVE_CONTAINER" != "1" ]; then
+	$DOCKER rm -v $CONTAINER_NAME
+fi
 
 echo "Done! Your image(s) should be in deploy/"
