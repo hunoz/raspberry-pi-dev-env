@@ -40,7 +40,7 @@ apt-get install -y $PACKAGES
 			pushd "${STAGE_WORK_DIR***REMOVED***" > /dev/null
 			if [ "${CLEAN***REMOVED***" = "1" ]; then
 				rm -rf .pc
-				rm -rf "./*-pc"
+				rm -rf ./*-pc
 			fi
 			QUILT_PATCHES="${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-patches"
 			SUB_STAGE_QUILT_PATCH_DIR="$(basename "$SUB_STAGE_DIR")-pc"
