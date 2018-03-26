@@ -23,10 +23,10 @@ rm -f "${ROOTFS_DIR***REMOVED***/etc/group-"
 rm -f "${ROOTFS_DIR***REMOVED***/etc/shadow-"
 rm -f "${ROOTFS_DIR***REMOVED***/etc/gshadow-"
 
-rm -f "${ROOTFS_DIR***REMOVED***/var/cache/debconf/*-old"
-rm -f "${ROOTFS_DIR***REMOVED***/var/lib/dpkg/*-old"
+rm -f "${ROOTFS_DIR***REMOVED***"/var/cache/debconf/*-old
+rm -f "${ROOTFS_DIR***REMOVED***"/var/lib/dpkg/*-old
 
-rm -f "${ROOTFS_DIR***REMOVED***/usr/share/icons/*/icon-theme.cache"
+rm -f "${ROOTFS_DIR***REMOVED***"/usr/share/icons/*/icon-theme.cache
 
 rm -f "${ROOTFS_DIR***REMOVED***/var/lib/dbus/machine-id"
 
