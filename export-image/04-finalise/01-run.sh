@@ -22,6 +22,8 @@ rm -f "${ROOTFS_DIR***REMOVED***/etc/passwd-"
 rm -f "${ROOTFS_DIR***REMOVED***/etc/group-"
 rm -f "${ROOTFS_DIR***REMOVED***/etc/shadow-"
 rm -f "${ROOTFS_DIR***REMOVED***/etc/gshadow-"
+rm -f "${ROOTFS_DIR***REMOVED***/etc/subuid-"
+rm -f "${ROOTFS_DIR***REMOVED***/etc/subgid-"
 
 rm -f "${ROOTFS_DIR***REMOVED***"/var/cache/debconf/*-old
 rm -f "${ROOTFS_DIR***REMOVED***"/var/lib/dpkg/*-old
