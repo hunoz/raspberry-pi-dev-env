@@ -1,0 +1,4 @@
+IMG_SUFFIX="-full"
+if [ "${USE_QEMU***REMOVED***" = "1" ]; then
+	export IMG_SUFFIX="${IMG_SUFFIX***REMOVED***-qemu"
+fi
