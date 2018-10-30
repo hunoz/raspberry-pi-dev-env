@@ -13,8 +13,8 @@ tar -v -c -C		files/marketing			-f "${NOOBS_DIR***REMOVED***/marketing.tar" .
 BOOT_SIZE="$(xz --robot -l "${NOOBS_DIR***REMOVED***/boot.tar.xz"  | grep totals | cut -f 5)"
 ROOT_SIZE="$(xz --robot -l "${NOOBS_DIR***REMOVED***/root.tar.xz"  | grep totals | cut -f 5)"
 
-BOOT_SIZE="$(( BOOT_SIZE / 1000000 + 1))"
-ROOT_SIZE="$(( ROOT_SIZE / 1000000 + 1))"
+BOOT_SIZE="$(( BOOT_SIZE / 1024 / 1024 + 1))"
+ROOT_SIZE="$(( ROOT_SIZE / 1024 / 1024 + 1))"
 
 BOOT_NOM="$(( BOOT_SIZE * 3 ))"
 ROOT_NOM="$(( ROOT_SIZE + 400 ))"
