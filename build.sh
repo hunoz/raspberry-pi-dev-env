@@ -141,6 +141,9 @@ export WORK_DIR="${WORK_DIR:-"${BASE_DIR***REMOVED***/work/${IMG_DATE***REMOVED*
 export DEPLOY_DIR=${DEPLOY_DIR:-"${BASE_DIR***REMOVED***/deploy"***REMOVED***
 export LOG_FILE="${WORK_DIR***REMOVED***/build.log"
 
+export FIRST_USER_NAME=${FIRST_USER_NAME:-pi***REMOVED***
+export FIRST_USER_PASS=${FIRST_USER_PASS:-raspberry***REMOVED***
+
 export BASE_DIR
 
 export CLEAN

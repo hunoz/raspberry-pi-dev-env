@@ -5,10 +5,10 @@ install -m 644 files/noclear.conf "${ROOTFS_DIR***REMOVED***/etc/systemd/system/
 install -v -m 644 files/fstab "${ROOTFS_DIR***REMOVED***/etc/fstab"
 
 on_chroot << ***REMOVED***
-if ! id -u pi >/dev/null 2>&1; then
-	adduser --disabled-password --gecos "" pi
+if ! id -u ${FIRST_USER_NAME***REMOVED*** >/dev/null 2>&1; then
+	adduser --disabled-password --gecos "" ${FIRST_USER_NAME***REMOVED***
 fi
-echo "pi:raspberry" | chpasswd
+echo "${FIRST_USER_NAME***REMOVED***:${FIRST_USER_PASS***REMOVED***" | chpasswd
 echo "root:root" | chpasswd
 ***REMOVED***
 
