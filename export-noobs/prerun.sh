@@ -1,13 +1,13 @@
 ***REMOVED***
 
-IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
+IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***.img"
 NOOBS_DIR="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***"
 unmount_image "${IMG_FILE***REMOVED***"
 
 mkdir -p "${STAGE_WORK_DIR***REMOVED***"
-cp "${WORK_DIR***REMOVED***/export-image/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***.img" "${STAGE_WORK_DIR***REMOVED***/"
+cp "${WORK_DIR***REMOVED***/export-image/${IMG_FILENAME***REMOVED***.img" "${STAGE_WORK_DIR***REMOVED***/"
 
-rm -rf "${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***"
+rm -rf "${NOOBS_DIR***REMOVED***"
 
 PARTED_OUT=$(parted -s "${IMG_FILE***REMOVED***" unit b print)
 BOOT_OFFSET=$(echo "$PARTED_OUT" | grep -e '^ 1'| xargs echo -n \
