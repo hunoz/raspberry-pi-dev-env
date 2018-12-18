@@ -146,6 +146,7 @@ export FIRST_USER_PASS=${FIRST_USER_PASS:-raspberry***REMOVED***
 export WPA_ESSID
 export WPA_PASSWORD
 export WPA_COUNTRY
+export ENABLE_SSH="${ENABLE_SSH:-0***REMOVED***"
 
 export BASE_DIR
 
