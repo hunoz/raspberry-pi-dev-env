@@ -189,6 +189,11 @@ source "${SCRIPT_DIR***REMOVED***/common"
 # shellcheck source=scripts/dependencies_check
 source "${SCRIPT_DIR***REMOVED***/dependencies_check"
 
+#check username is valid
+if [[ ! "$FIRST_USER_NAME" =~ ^[a-z][-a-z0-9_]*$ ]]; then
+	echo "Invalid FIRST_USER_NAME: $FIRST_USER_NAME"
+	exit 1
+fi
 
 dependencies_check "${BASE_DIR***REMOVED***/depends"
 
