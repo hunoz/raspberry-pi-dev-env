@@ -14,6 +14,6 @@ fi
 if [ -v WPA_ESSID -a -v WPA_PASSWORD ]
 then
 on_chroot <<***REMOVED***
-wpa_passphrase ${WPA_ESSID***REMOVED*** ${WPA_PASSWORD***REMOVED*** >> "/etc/wpa_supplicant/wpa_supplicant.conf"
+wpa_passphrase "${WPA_ESSID***REMOVED***" "${WPA_PASSWORD***REMOVED***" >> "/etc/wpa_supplicant/wpa_supplicant.conf"
 ***REMOVED***
 fi
