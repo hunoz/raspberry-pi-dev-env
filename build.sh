@@ -195,7 +195,10 @@ dependencies_check "${BASE_DIR***REMOVED***/depends"
 mkdir -p "${WORK_DIR***REMOVED***"
 log "Begin ${BASE_DIR***REMOVED***"
 
-for STAGE_DIR in "${BASE_DIR***REMOVED***/stage"*; do
+STAGE_LIST=${STAGE_LIST:-${BASE_DIR***REMOVED***/stage****REMOVED***
+
+for STAGE_DIR_ in $STAGE_LIST; do
+	STAGE_DIR=`realpath "${STAGE_DIR_***REMOVED***"`
 	run_stage
 done
 
