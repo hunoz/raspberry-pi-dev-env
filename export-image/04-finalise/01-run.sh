@@ -8,8 +8,8 @@ on_chroot << ***REMOVED***
 hardlink -t /usr/share/doc
 ***REMOVED***
 
-if [ -d "${ROOTFS_DIR***REMOVED***/home/pi/.config" ]; then
-	chmod 700 "${ROOTFS_DIR***REMOVED***/home/pi/.config"
+if [ -d "${ROOTFS_DIR***REMOVED***/home/${FIRST_USER_NAME***REMOVED***/.config" ]; then
+	chmod 700 "${ROOTFS_DIR***REMOVED***/home/${FIRST_USER_NAME***REMOVED***/.config"
 fi
 
 rm -f "${ROOTFS_DIR***REMOVED***/etc/apt/apt.conf.d/51cache"
