@@ -144,8 +144,8 @@ fi
 
 export USE_QEMU="${USE_QEMU:-0***REMOVED***"
 export IMG_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"***REMOVED***"
-export IMG_FILENAME="${IMG_FILENAME:-"${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***"***REMOVED***"
-export ZIP_FILENAME="${ZIP_FILENAME:-"image_${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***"***REMOVED***"
+export IMG_FILENAME="${IMG_FILENAME:-"${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
+export ZIP_FILENAME="${ZIP_FILENAME:-"image_${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
 
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]***REMOVED***")" && pwd)"
 export SCRIPT_DIR="${BASE_DIR***REMOVED***/scripts"

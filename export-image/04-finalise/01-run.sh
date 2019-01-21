@@ -1,7 +1,7 @@
 ***REMOVED***
 
-IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***.img"
-INFO_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***.info"
+IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
+INFO_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.info"
 
 on_chroot << ***REMOVED***
 /etc/init.d/fake-hwclock stop
@@ -74,10 +74,10 @@ unmount_image "${IMG_FILE***REMOVED***"
 
 mkdir -p "${DEPLOY_DIR***REMOVED***"
 
-rm -f "${DEPLOY_DIR***REMOVED***/${ZIP_FILENAME***REMOVED***.zip"
+rm -f "${DEPLOY_DIR***REMOVED***/${ZIP_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.zip"
 
 pushd "${STAGE_WORK_DIR***REMOVED***" > /dev/null
-zip "${DEPLOY_DIR***REMOVED***/${ZIP_FILENAME***REMOVED***.zip" \
+zip "${DEPLOY_DIR***REMOVED***/${ZIP_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.zip" \
 	"$(basename "${IMG_FILE***REMOVED***")"
 popd > /dev/null
 
