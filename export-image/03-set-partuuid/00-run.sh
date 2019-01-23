@@ -1,6 +1,6 @@
 ***REMOVED***
 
-IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMX_SUFFIX***REMOVED***.img"
+IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 
 IMGID="$(dd if="${IMG_FILE***REMOVED***" skip=440 bs=1 count=4 2>/dev/null | xxd -e | cut -f 2 -d' ')"
 
