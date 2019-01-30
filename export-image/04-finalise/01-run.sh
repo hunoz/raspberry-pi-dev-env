@@ -68,7 +68,7 @@ cp "$ROOTFS_DIR/etc/rpi-issue" "$INFO_FILE"
 ROOT_DEV="$(mount | grep "${ROOTFS_DIR***REMOVED*** " | cut -f1 -d' ')"
 
 unmount "${ROOTFS_DIR***REMOVED***"
-zerofree -v "${ROOT_DEV***REMOVED***"
+zerofree "${ROOT_DEV***REMOVED***"
 
 unmount_image "${IMG_FILE***REMOVED***"
 
