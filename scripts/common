@@ -57,7 +57,7 @@ unmount_image(){
 	sync
 	sleep 1
 	local LOOP_DEVICES
-	LOOP_DEVICES=$(losetup -j "${1***REMOVED***" | cut -f1 -d':')
+	LOOP_DEVICES=$(losetup --list | grep "$(basename "${1***REMOVED***")" | cut -f1 -d' ')
 	for LOOP_DEV in ${LOOP_DEVICES***REMOVED***; do
 		if [ -n "${LOOP_DEV***REMOVED***" ]; then
 			local MOUNTED_DIR
