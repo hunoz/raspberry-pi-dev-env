@@ -1,5 +1,7 @@
 ***REMOVED***
 
+BUILD_OPTS="$@"
+
 DOCKER="docker"
 set +e
 $DOCKER ps >/dev/null 2>&1
@@ -13,9 +15,7 @@ if ! $DOCKER ps >/dev/null; then
 fi
 set -e
 
-config_file=()
 if [ -f config ]; then
-	config_file=("--env-file" "$(pwd)/config")
 	source config
 fi
 
@@ -23,9 +23,7 @@ while getopts "c:" flag
 do
 	case "$flag" in
 		c)
-			EXTRA_CONFIG="$OPTARG"
-			config_file=( "${config_file[@]***REMOVED***" "--env-file" "$(pwd)/${EXTRA_CONFIG***REMOVED***")
-			source "$EXTRA_CONFIG"
+			source "$OPTARG"
 			;;
 	esac
 done
@@ -58,20 +56,17 @@ if [ "$CONTAINER_EXISTS" != "" ]; then
 	trap "echo 'got CTRL+C... please wait 5s'; $DOCKER stop -t 5 ${CONTAINER_NAME***REMOVED***_cont" SIGINT SIGTERM
 	time $DOCKER run --rm --privileged \
 		--volumes-from="${CONTAINER_NAME***REMOVED***" --name "${CONTAINER_NAME***REMOVED***_cont" \
-		-e IMG_NAME="${IMG_NAME***REMOVED***"\
 		pi-gen \
 		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
-	cd /pi-gen; ./build.sh;
+	cd /pi-gen; ./build.sh ${BUILD_OPTS***REMOVED*** ;
 	rsync -av work/*/build.log deploy/" &
 	wait "$!"
 else
 	trap "echo 'got CTRL+C... please wait 5s'; $DOCKER stop -t 5 ${CONTAINER_NAME***REMOVED***" SIGINT SIGTERM
 	time $DOCKER run --name "${CONTAINER_NAME***REMOVED***" --privileged \
-		-e IMG_NAME="${IMG_NAME***REMOVED***"\
-		"${config_file[@]***REMOVED***" \
 		pi-gen \
 		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
-	cd /pi-gen; ./build.sh &&
+	cd /pi-gen; ./build.sh ${BUILD_OPTS***REMOVED*** &&
 	rsync -av work/*/build.log deploy/" &
 	wait "$!"
 fi
