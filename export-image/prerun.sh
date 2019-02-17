@@ -66,4 +66,5 @@ mount -v "$ROOT_DEV" "${ROOTFS_DIR***REMOVED***" -t ext4
 mkdir -p "${ROOTFS_DIR***REMOVED***/boot"
 mount -v "$BOOT_DEV" "${ROOTFS_DIR***REMOVED***/boot" -t vfat
 
-rsync -aHAXx --exclude var/cache/apt/archives "${EXPORT_ROOTFS_DIR***REMOVED***/" "${ROOTFS_DIR***REMOVED***/"
+rsync -aHAXx --exclude /var/cache/apt/archives --exclude /boot "${EXPORT_ROOTFS_DIR***REMOVED***/" "${ROOTFS_DIR***REMOVED***/"
+rsync -rtx "${EXPORT_ROOTFS_DIR***REMOVED***/boot/" "${ROOTFS_DIR***REMOVED***/boot/"
