@@ -1,5 +1,5 @@
 ***REMOVED***
-# shellcheck disable=SC2119,SC1091
+# shellcheck disable=SC2119
 run_sub_stage()
 {
 	log "Begin ${SUB_STAGE_DIR***REMOVED***"
@@ -102,7 +102,7 @@ run_stage(){
 			./prerun.sh
 			log "End ${STAGE_DIR***REMOVED***/prerun.sh"
 		fi
-		for SUB_STAGE_DIR in ${STAGE_DIR***REMOVED***/*; do
+		for SUB_STAGE_DIR in "${STAGE_DIR***REMOVED***"/*; do
 			if [ -d "${SUB_STAGE_DIR***REMOVED***" ] &&
 			   [ ! -f "${SUB_STAGE_DIR***REMOVED***/SKIP" ]; then
 				run_sub_stage
@@ -124,6 +124,7 @@ fi
 
 
 if [ -f config ]; then
+	# shellcheck disable=SC1091
 	source config
 fi
 
@@ -132,7 +133,10 @@ do
 	case "$flag" in
 		c)
 			EXTRA_CONFIG="$OPTARG"
+			# shellcheck disable=SC1090
 			source "$EXTRA_CONFIG"
+			;;
+		*)
 			;;
 	esac
 done
@@ -206,8 +210,8 @@ log "Begin ${BASE_DIR***REMOVED***"
 
 STAGE_LIST=${STAGE_LIST:-${BASE_DIR***REMOVED***/stage****REMOVED***
 
-for STAGE_DIR_ in $STAGE_LIST; do
-	STAGE_DIR=`realpath "${STAGE_DIR_***REMOVED***"`
+for STAGE_DIR in $STAGE_LIST; do
+	STAGE_DIR=$(realpath "${STAGE_DIR***REMOVED***")
 	run_stage
 done
 
