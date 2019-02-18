@@ -203,6 +203,11 @@ if [[ ! "$FIRST_USER_NAME" =~ ^[a-z][-a-z0-9_]*$ ]]; then
 	exit 1
 fi
 
+if [[ -n "${APT_PROXY***REMOVED***" ]] && ! curl --silent ${APT_PROXY***REMOVED*** >/dev/null ; then
+	echo "Could not reach APT_PROXY server:" ${APT_PROXY***REMOVED***
+	exit 1
+fi
+
 dependencies_check "${BASE_DIR***REMOVED***/depends"
 
 mkdir -p "${WORK_DIR***REMOVED***"
