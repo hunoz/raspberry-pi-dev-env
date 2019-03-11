@@ -33,8 +33,8 @@ mount "$BOOT_DEV" "${STAGE_WORK_DIR***REMOVED***/rootfs/boot"
 
 ln -sv "/lib/systemd/system/apply_noobs_os_config.service" "$ROOTFS_DIR/etc/systemd/system/multi-user.target.wants/apply_noobs_os_config.service"
 
-bsdtar --numeric-owner --format gnutar --use-compress-program pxz -C "${STAGE_WORK_DIR***REMOVED***/rootfs/boot" -cpf "${NOOBS_DIR***REMOVED***/boot.tar.xz" .
+bsdtar --numeric-owner --format gnutar -C "${STAGE_WORK_DIR***REMOVED***/rootfs/boot" -cpf - . | xz -T0 > "${NOOBS_DIR***REMOVED***/boot.tar.xz"
 umount "${STAGE_WORK_DIR***REMOVED***/rootfs/boot"
-bsdtar --numeric-owner --format gnutar --use-compress-program pxz -C "${STAGE_WORK_DIR***REMOVED***/rootfs" --one-file-system -cpf "${NOOBS_DIR***REMOVED***/root.tar.xz" .
+bsdtar --numeric-owner --format gnutar -C "${STAGE_WORK_DIR***REMOVED***/rootfs" --one-file-system -cpf - . | xz -T0 > "${NOOBS_DIR***REMOVED***/root.tar.xz"
 
 unmount_image "${IMG_FILE***REMOVED***"
