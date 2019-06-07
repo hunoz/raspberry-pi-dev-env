@@ -9,11 +9,11 @@ rm -f "${IMG_FILE***REMOVED***"
 rm -rf "${ROOTFS_DIR***REMOVED***"
 mkdir -p "${ROOTFS_DIR***REMOVED***"
 
-BOOT_SIZE=$(du --apparent-size -s "${EXPORT_ROOTFS_DIR***REMOVED***/boot" --block-size=1 | cut -f 1)
+BOOT_SIZE="$((256 * 1024 * 1024))"
 TOTAL_SIZE=$(du --apparent-size -s "${EXPORT_ROOTFS_DIR***REMOVED***" --exclude var/cache/apt/archives --block-size=1 | cut -f 1)
 
 ROUND_SIZE="$((4 * 1024 * 1024))"
-ROUNDED_ROOT_SECTOR=$(((2 * BOOT_SIZE + ROUND_SIZE) / ROUND_SIZE * ROUND_SIZE / 512 + 8192))
+ROUNDED_ROOT_SECTOR=$(((BOOT_SIZE + ROUND_SIZE) / ROUND_SIZE * ROUND_SIZE / 512 + 8192))
 IMG_SIZE=$(((BOOT_SIZE + TOTAL_SIZE + (800 * 1024 * 1024) + ROUND_SIZE - 1) / ROUND_SIZE * ROUND_SIZE))
 
 truncate -s "${IMG_SIZE***REMOVED***" "${IMG_FILE***REMOVED***"
@@ -23,7 +23,7 @@ n
 
 
 8192
-+$((BOOT_SIZE * 2 /512))
++$((BOOT_SIZE / 512))
 p
 t
 c

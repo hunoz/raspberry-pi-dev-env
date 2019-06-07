@@ -16,7 +16,7 @@ ROOT_SIZE="$(xz --robot -l "${NOOBS_DIR***REMOVED***/root.tar.xz"  | grep totals
 BOOT_SIZE="$(( BOOT_SIZE / 1024 / 1024 + 1))"
 ROOT_SIZE="$(( ROOT_SIZE / 1024 / 1024 + 1))"
 
-BOOT_NOM="$(( BOOT_SIZE * 3 ))"
+BOOT_NOM="256"
 ROOT_NOM="$(( ROOT_SIZE + 400 ))"
 
 mv "${NOOBS_DIR***REMOVED***/OS.png" "${NOOBS_DIR***REMOVED***/${NOOBS_NAME// /_***REMOVED***.png"
