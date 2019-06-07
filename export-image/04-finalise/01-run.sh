@@ -15,6 +15,8 @@ fi
 rm -f "${ROOTFS_DIR***REMOVED***/etc/apt/apt.conf.d/51cache"
 rm -f "${ROOTFS_DIR***REMOVED***/usr/bin/qemu-arm-static"
 
+rm -f "${ROOTFS_DIR***REMOVED***/etc/network/interfaces.dpkg-old"
+
 rm -f "${ROOTFS_DIR***REMOVED***/etc/apt/sources.list~"
 rm -f "${ROOTFS_DIR***REMOVED***/etc/apt/trusted.gpg~"
 
