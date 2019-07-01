@@ -197,6 +197,8 @@ source "${SCRIPT_DIR***REMOVED***/common"
 # shellcheck source=scripts/dependencies_check
 source "${SCRIPT_DIR***REMOVED***/dependencies_check"
 
+dependencies_check "${BASE_DIR***REMOVED***/depends"
+
 #check username is valid
 if [[ ! "$FIRST_USER_NAME" =~ ^[a-z][-a-z0-9_]*$ ]]; then
 	echo "Invalid FIRST_USER_NAME: $FIRST_USER_NAME"
@@ -207,8 +209,6 @@ if [[ -n "${APT_PROXY***REMOVED***" ]] && ! curl --silent "${APT_PROXY***REMOVED
 	echo "Could not reach APT_PROXY server: ${APT_PROXY***REMOVED***"
 	exit 1
 fi
-
-dependencies_check "${BASE_DIR***REMOVED***/depends"
 
 mkdir -p "${WORK_DIR***REMOVED***"
 log "Begin ${BASE_DIR***REMOVED***"
