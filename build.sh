@@ -168,6 +168,8 @@ export WPA_PASSWORD
 export WPA_COUNTRY
 export ENABLE_SSH="${ENABLE_SSH:-0***REMOVED***"
 
+export GIT_HASH=${GIT_HASH:-"$(git rev-parse HEAD)"***REMOVED***
+
 export BASE_DIR
 
 export CLEAN

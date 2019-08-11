@@ -52,6 +52,9 @@ if [ -z "${IMG_NAME***REMOVED***" ]; then
 exit 1
 fi
 
+# Ensure the Git Hash is recorded before entering the docker container
+GIT_HASH=${GIT_HASH:-"$(git rev-parse HEAD)"***REMOVED***
+
 CONTAINER_EXISTS=$(${DOCKER***REMOVED*** ps -a --filter name="${CONTAINER_NAME***REMOVED***" -q)
 CONTAINER_RUNNING=$(${DOCKER***REMOVED*** ps --filter name="${CONTAINER_NAME***REMOVED***" -q)
 if [ "${CONTAINER_RUNNING***REMOVED***" != "" ]; then
@@ -73,6 +76,7 @@ if [ "${CONTAINER_EXISTS***REMOVED***" != "" ]; then
 	trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${CONTAINER_NAME***REMOVED***_cont' SIGINT SIGTERM
 	time ${DOCKER***REMOVED*** run --rm --privileged \
 		--volume "${CONFIG_FILE***REMOVED***":/config:ro \
+		-e "GIT_HASH=${GIT_HASH***REMOVED***" \
 		--volumes-from="${CONTAINER_NAME***REMOVED***" --name "${CONTAINER_NAME***REMOVED***_cont" \
 		pi-gen \
 		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
@@ -83,6 +87,7 @@ else
 	trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${CONTAINER_NAME***REMOVED***' SIGINT SIGTERM
 	time ${DOCKER***REMOVED*** run --name "${CONTAINER_NAME***REMOVED***" --privileged \
 		--volume "${CONFIG_FILE***REMOVED***":/config:ro \
+		-e "GIT_HASH=${GIT_HASH***REMOVED***" \
 		pi-gen \
 		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
 	cd /pi-gen; ./build.sh ${BUILD_OPTS***REMOVED*** &&
