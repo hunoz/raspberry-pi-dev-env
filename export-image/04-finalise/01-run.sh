@@ -49,8 +49,6 @@ find "${ROOTFS_DIR***REMOVED***/var/log/" -type f -exec cp /dev/null {***REMOVED
 rm -f "${ROOTFS_DIR***REMOVED***/root/.vnc/private.key"
 rm -f "${ROOTFS_DIR***REMOVED***/etc/vnc/updateid"
 
-rm -f "${ROOTFS_DIR***REMOVED***/etc/network/interfaces.dpkg-old"
-
 update_issue "$(basename "${EXPORT_DIR***REMOVED***")"
 install -m 644 "${ROOTFS_DIR***REMOVED***/etc/rpi-issue" "${ROOTFS_DIR***REMOVED***/boot/issue.txt"
 
