@@ -4,8 +4,12 @@ IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX*
 INFO_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.info"
 
 on_chroot << ***REMOVED***
-/etc/init.d/fake-hwclock stop
-hardlink -t /usr/share/doc
+if [ -x /etc/init.d/fake-hwclock ]; then
+	/etc/init.d/fake-hwclock stop
+fi
+if hash hardlink 2>/dev/null; then
+	hardlink -t /usr/share/doc
+fi
 ***REMOVED***
 
 if [ -d "${ROOTFS_DIR***REMOVED***/home/${FIRST_USER_NAME***REMOVED***/.config" ]; then
