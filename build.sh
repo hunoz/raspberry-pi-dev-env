@@ -161,6 +161,8 @@ export DEPLOY_DIR=${DEPLOY_DIR:-"${BASE_DIR***REMOVED***/deploy"***REMOVED***
 export DEPLOY_ZIP="${DEPLOY_ZIP:-1***REMOVED***"
 export LOG_FILE="${WORK_DIR***REMOVED***/build.log"
 
+export HOSTNAME=${HOSTNAME:-raspberrypi***REMOVED***
+
 export FIRST_USER_NAME=${FIRST_USER_NAME:-pi***REMOVED***
 export FIRST_USER_PASS=${FIRST_USER_PASS:-raspberry***REMOVED***
 export WPA_ESSID
