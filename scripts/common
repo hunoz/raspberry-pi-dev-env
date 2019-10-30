@@ -17,8 +17,9 @@ bootstrap(){
 	BOOTSTRAP_ARGS+=(--components "main,contrib,non-free")
 	BOOTSTRAP_ARGS+=(--keyring "${STAGE_DIR***REMOVED***/files/raspberrypi.gpg")
 	BOOTSTRAP_ARGS+=("$@")
+	printf -v BOOTSTRAP_STR '%q ' "${BOOTSTRAP_ARGS[@]***REMOVED***"
 
-	setarch linux32 capsh --drop=cap_setfcap -- "${BOOTSTRAP_CMD***REMOVED***" "${BOOTSTRAP_ARGS[@]***REMOVED***" || true
+	setarch linux32 capsh --drop=cap_setfcap -- -c "'${BOOTSTRAP_CMD***REMOVED***' $BOOTSTRAP_STR" || true
 
 	if [ -d "$2/debootstrap" ]; then
 		rmdir "$2/debootstrap"
