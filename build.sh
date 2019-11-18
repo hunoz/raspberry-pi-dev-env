@@ -122,7 +122,7 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]***REMOVED***")" && pwd)"***REMOVED***
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]***REMOVED***")" && pwd)"
 export BASE_DIR
 
 if [ -f config ]; then
