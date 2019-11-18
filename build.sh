@@ -122,6 +122,8 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]***REMOVED***")" && pwd)"***REMOVED***
+export BASE_DIR
 
 if [ -f config ]; then
 	# shellcheck disable=SC1091
@@ -154,7 +156,6 @@ export IMG_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"***REMOVED***"
 export IMG_FILENAME="${IMG_FILENAME:-"${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
 export ZIP_FILENAME="${ZIP_FILENAME:-"image_${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
 
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]***REMOVED***")" && pwd)"
 export SCRIPT_DIR="${BASE_DIR***REMOVED***/scripts"
 export WORK_DIR="${WORK_DIR:-"${BASE_DIR***REMOVED***/work/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
 export DEPLOY_DIR=${DEPLOY_DIR:-"${BASE_DIR***REMOVED***/deploy"***REMOVED***
@@ -178,8 +179,6 @@ export KEYBOARD_LAYOUT="${KEYBOARD_LAYOUT:-English (UK)***REMOVED***"
 export TIMEZONE_DEFAULT="${TIMEZONE_DEFAULT:-Europe/London***REMOVED***"
 
 export GIT_HASH=${GIT_HASH:-"$(git rev-parse HEAD)"***REMOVED***
-
-export BASE_DIR
 
 export CLEAN
 export IMG_NAME
