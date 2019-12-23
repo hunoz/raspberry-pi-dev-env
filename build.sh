@@ -220,6 +220,11 @@ if [[ -n "${APT_PROXY***REMOVED***" ]] && ! curl --silent "${APT_PROXY***REMOVED
 	exit 1
 fi
 
+if [[ ${#WPA_PASSWORD***REMOVED*** -lt 8 || ${#WPA_PASSWORD***REMOVED*** -gt 63  ]] ; then
+	echo "WPA_PASSWORD" must be between 8 and 63 characters
+	exit 1
+fi
+
 mkdir -p "${WORK_DIR***REMOVED***"
 log "Begin ${BASE_DIR***REMOVED***"
 
