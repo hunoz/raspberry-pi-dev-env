@@ -12,7 +12,8 @@ fi
 
 if [ -v WPA_ESSID ] && [ -v WPA_PASSWORD ]; then
 on_chroot <<***REMOVED***
-wpa_passphrase "${WPA_ESSID***REMOVED***" "${WPA_PASSWORD***REMOVED***" >> "/etc/wpa_supplicant/wpa_supplicant.conf"
+set -o pipefail
+wpa_passphrase "${WPA_ESSID***REMOVED***" "${WPA_PASSWORD***REMOVED***" | tee -a "/etc/wpa_supplicant/wpa_supplicant.conf"
 ***REMOVED***
 elif [ -v WPA_ESSID ]; then
 cat >> "${ROOTFS_DIR***REMOVED***/etc/wpa_supplicant/wpa_supplicant.conf" << EOL
