@@ -20,7 +20,7 @@ SEL***REMOVED***
 			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < "${i***REMOVED***-packages-nr")"
 			if [ -n "$PACKAGES" ]; then
 				on_chroot << ***REMOVED***
-apt-get install --no-install-recommends -y $PACKAGES
+apt-get -o APT::Acquire::Retries=3 install --no-install-recommends -y $PACKAGES
 ***REMOVED***
 			fi
 			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages-nr"
@@ -30,7 +30,7 @@ apt-get install --no-install-recommends -y $PACKAGES
 			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < "${i***REMOVED***-packages")"
 			if [ -n "$PACKAGES" ]; then
 				on_chroot << ***REMOVED***
-apt-get install -y $PACKAGES
+apt-get -o APT::Acquire::Retries=3 install -y $PACKAGES
 ***REMOVED***
 			fi
 			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages"
