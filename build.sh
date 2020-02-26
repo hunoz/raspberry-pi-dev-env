@@ -166,6 +166,7 @@ export TARGET_HOSTNAME=${TARGET_HOSTNAME:-raspberrypi***REMOVED***
 
 export FIRST_USER_NAME=${FIRST_USER_NAME:-pi***REMOVED***
 export FIRST_USER_PASS=${FIRST_USER_PASS:-raspberry***REMOVED***
+export RELEASE=${RELEASE:-buster***REMOVED***
 export WPA_ESSID
 export WPA_PASSWORD
 export WPA_COUNTRY

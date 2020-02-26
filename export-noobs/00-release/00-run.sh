@@ -36,6 +36,7 @@ sed "${NOOBS_DIR***REMOVED***/partitions.json" -i -e "s|ROOT_NOM|${ROOT_NOM***RE
 sed "${NOOBS_DIR***REMOVED***/os.json" -i -e "s|UNRELEASED|${IMG_DATE***REMOVED***|"
 sed "${NOOBS_DIR***REMOVED***/os.json" -i -e "s|NOOBS_NAME|${NOOBS_NAME***REMOVED***|"
 sed "${NOOBS_DIR***REMOVED***/os.json" -i -e "s|NOOBS_DESCRIPTION|${NOOBS_DESCRIPTION***REMOVED***|"
+sed "${NOOBS_DIR***REMOVED***/os.json" -i -e "s|RELEASE|${RELEASE***REMOVED***|"
 
 sed "${NOOBS_DIR***REMOVED***/release_notes.txt" -i -e "s|UNRELEASED|${IMG_DATE***REMOVED***|"
 
