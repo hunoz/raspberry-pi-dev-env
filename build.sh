@@ -171,6 +171,7 @@ export WPA_ESSID
 export WPA_PASSWORD
 export WPA_COUNTRY
 export ENABLE_SSH="${ENABLE_SSH:-0***REMOVED***"
+export PUBKEY_ONLY_SSH="${PUBKEY_ONLY_SSH:-0***REMOVED***"
 
 export LOCALE_DEFAULT="${LOCALE_DEFAULT:-en_GB.UTF-8***REMOVED***"
 
@@ -180,6 +181,8 @@ export KEYBOARD_LAYOUT="${KEYBOARD_LAYOUT:-English (UK)***REMOVED***"
 export TIMEZONE_DEFAULT="${TIMEZONE_DEFAULT:-Europe/London***REMOVED***"
 
 export GIT_HASH=${GIT_HASH:-"$(git rev-parse HEAD)"***REMOVED***
+
+export PUBKEY_SSH_FIRST_USER
 
 export CLEAN
 export IMG_NAME
@@ -223,6 +226,11 @@ fi
 
 if [[ -n "${WPA_PASSWORD***REMOVED***" && ${#WPA_PASSWORD***REMOVED*** -lt 8 || ${#WPA_PASSWORD***REMOVED*** -gt 63  ]] ; then
 	echo "WPA_PASSWORD" must be between 8 and 63 characters
+	exit 1
+fi
+
+if [[ "${PUBKEY_ONLY_SSH***REMOVED***" = "1" && -z "${PUBKEY_SSH_FIRST_USER***REMOVED***" ]]; then
+	echo "Must set 'PUBKEY_SSH_FIRST_USER' to a valid SSH public key if using PUBKEY_ONLY_SSH"
 	exit 1
 fi
 
