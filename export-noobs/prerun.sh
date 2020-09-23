@@ -16,8 +16,32 @@ BOOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^1:' | cut -d':' -f 4 | tr -d B)
 ROOT_OFFSET=$(echo "$PARTED_OUT" | grep -e '^2:' | cut -d':' -f 2 | tr -d B)
 ROOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^2:' | cut -d':' -f 4 | tr -d B)
 
-BOOT_DEV=$(losetup --show -f -o "${BOOT_OFFSET***REMOVED***" --sizelimit "${BOOT_LENGTH***REMOVED***" "${IMG_FILE***REMOVED***")
-ROOT_DEV=$(losetup --show -f -o "${ROOT_OFFSET***REMOVED***" --sizelimit "${ROOT_LENGTH***REMOVED***" "${IMG_FILE***REMOVED***")
+echo "Mounting BOOT_DEV..."
+cnt=0
+until BOOT_DEV=$(losetup --show -f -o "${BOOT_OFFSET***REMOVED***" --sizelimit "${BOOT_LENGTH***REMOVED***" "${IMG_FILE***REMOVED***"); do
+	if [ $cnt -lt 5 ]; then
+		cnt=$((cnt + 1))
+		echo "Error in losetup for BOOT_DEV.  Retrying..."
+		sleep 5
+	else
+		echo "ERROR: losetup for BOOT_DEV failed; exiting"
+		exit 1
+	fi
+done
+
+echo "Mounting ROOT_DEV..."
+cnt=0
+until ROOT_DEV=$(losetup --show -f -o "${ROOT_OFFSET***REMOVED***" --sizelimit "${ROOT_LENGTH***REMOVED***" "${IMG_FILE***REMOVED***"); do
+	if [ $cnt -lt 5 ]; then
+		cnt=$((cnt + 1))
+		echo "Error in losetup for ROOT_DEV.  Retrying..."
+		sleep 5
+	else
+		echo "ERROR: losetup for ROOT_DEV failed; exiting"
+		exit 1
+	fi
+done
+
 echo "/boot: offset $BOOT_OFFSET, length $BOOT_LENGTH"
 echo "/:     offset $ROOT_OFFSET, length $ROOT_LENGTH"
 
