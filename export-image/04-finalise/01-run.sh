@@ -16,7 +16,6 @@ if [ -d "${ROOTFS_DIR***REMOVED***/home/${FIRST_USER_NAME***REMOVED***/.config" 
 	chmod 700 "${ROOTFS_DIR***REMOVED***/home/${FIRST_USER_NAME***REMOVED***/.config"
 fi
 
-rm -f "${ROOTFS_DIR***REMOVED***/etc/apt/apt.conf.d/51cache"
 rm -f "${ROOTFS_DIR***REMOVED***/usr/bin/qemu-arm-static"
 
 if [ "${USE_QEMU***REMOVED***" != "1" ]; then
