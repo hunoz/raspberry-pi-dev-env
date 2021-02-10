@@ -1,13 +1,18 @@
 ***REMOVED***
 
-IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
+if [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
 
-IMGID="$(dd if="${IMG_FILE***REMOVED***" skip=440 bs=1 count=4 2>/dev/null | xxd -e | cut -f 2 -d' ')"
+	IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 
-BOOT_PARTUUID="${IMGID***REMOVED***-01"
-ROOT_PARTUUID="${IMGID***REMOVED***-02"
+	IMGID="$(dd if="${IMG_FILE***REMOVED***" skip=440 bs=1 count=4 2>/dev/null | xxd -e | cut -f 2 -d' ')"
 
-sed -i "s/BOOTDEV/PARTUUID=${BOOT_PARTUUID***REMOVED***/" "${ROOTFS_DIR***REMOVED***/etc/fstab"
-sed -i "s/ROOTDEV/PARTUUID=${ROOT_PARTUUID***REMOVED***/" "${ROOTFS_DIR***REMOVED***/etc/fstab"
+	BOOT_PARTUUID="${IMGID***REMOVED***-01"
+	ROOT_PARTUUID="${IMGID***REMOVED***-02"
 
-sed -i "s/ROOTDEV/PARTUUID=${ROOT_PARTUUID***REMOVED***/" "${ROOTFS_DIR***REMOVED***/boot/cmdline.txt"
+	sed -i "s/BOOTDEV/PARTUUID=${BOOT_PARTUUID***REMOVED***/" "${ROOTFS_DIR***REMOVED***/etc/fstab"
+	sed -i "s/ROOTDEV/PARTUUID=${ROOT_PARTUUID***REMOVED***/" "${ROOTFS_DIR***REMOVED***/etc/fstab"
+
+	sed -i "s/ROOTDEV/PARTUUID=${ROOT_PARTUUID***REMOVED***/" "${ROOTFS_DIR***REMOVED***/boot/cmdline.txt"
+
+fi
+

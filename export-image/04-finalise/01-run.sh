@@ -76,17 +76,24 @@ cp "$ROOTFS_DIR/etc/rpi-issue" "$INFO_FILE"
 	dpkg -l --root "$ROOTFS_DIR"
 ***REMOVED*** >> "$INFO_FILE"
 
-ROOT_DEV="$(mount | grep "${ROOTFS_DIR***REMOVED*** " | cut -f1 -d' ')"
-
-unmount "${ROOTFS_DIR***REMOVED***"
-zerofree "${ROOT_DEV***REMOVED***"
-
-unmount_image "${IMG_FILE***REMOVED***"
-
 mkdir -p "${DEPLOY_DIR***REMOVED***"
 
 rm -f "${DEPLOY_DIR***REMOVED***/${ZIP_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.zip"
 rm -f "${DEPLOY_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
+
+mv "$INFO_FILE" "$DEPLOY_DIR/"
+
+if [ "${USE_QCOW2***REMOVED***" = "0" ] && [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
+	ROOT_DEV="$(mount | grep "${ROOTFS_DIR***REMOVED*** " | cut -f1 -d' ')"
+
+	unmount "${ROOTFS_DIR***REMOVED***"
+	zerofree "${ROOT_DEV***REMOVED***"
+
+	unmount_image "${IMG_FILE***REMOVED***"
+else
+	unload_qimage
+	make_bootable_image "${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.qcow2" "$IMG_FILE"
+fi
 
 if [ "${DEPLOY_ZIP***REMOVED***" == "1" ]; then
 	pushd "${STAGE_WORK_DIR***REMOVED***" > /dev/null
@@ -94,7 +101,5 @@ if [ "${DEPLOY_ZIP***REMOVED***" == "1" ]; then
 		"$(basename "${IMG_FILE***REMOVED***")"
 	popd > /dev/null
 else
-	cp "$IMG_FILE" "$DEPLOY_DIR"
+	mv "$IMG_FILE" "$DEPLOY_DIR/"
 fi
-
-cp "$INFO_FILE" "$DEPLOY_DIR"

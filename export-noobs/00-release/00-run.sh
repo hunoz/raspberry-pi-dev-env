@@ -41,4 +41,8 @@ sed "${NOOBS_DIR***REMOVED***/os.json" -i -e "s|KERNEL|$(cat "${STAGE_WORK_DIR**
 
 sed "${NOOBS_DIR***REMOVED***/release_notes.txt" -i -e "s|UNRELEASED|${IMG_DATE***REMOVED***|"
 
-cp -a "${NOOBS_DIR***REMOVED***" "${DEPLOY_DIR***REMOVED***/"
+if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+	mv "${NOOBS_DIR***REMOVED***" "${DEPLOY_DIR***REMOVED***/"
+else
+	cp -a "${NOOBS_DIR***REMOVED***" "${DEPLOY_DIR***REMOVED***/"
+fi

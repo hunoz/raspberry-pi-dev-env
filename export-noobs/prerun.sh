@@ -1,11 +1,15 @@
 ***REMOVED***
 
-IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 NOOBS_DIR="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***"
-unmount_image "${IMG_FILE***REMOVED***"
-
 mkdir -p "${STAGE_WORK_DIR***REMOVED***"
-cp "${WORK_DIR***REMOVED***/export-image/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img" "${STAGE_WORK_DIR***REMOVED***/"
+
+if [ "${DEPLOY_ZIP***REMOVED***" == "1" ]; then
+	IMG_FILE="${WORK_DIR***REMOVED***/export-image/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
+else
+	IMG_FILE="${DEPLOY_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
+fi
+
+unmount_image "${IMG_FILE***REMOVED***"
 
 rm -rf "${NOOBS_DIR***REMOVED***"
 
@@ -59,5 +63,9 @@ echo "$KERNEL_VER" > "${STAGE_WORK_DIR***REMOVED***/kernel_version"
 bsdtar --numeric-owner --format gnutar -C "${STAGE_WORK_DIR***REMOVED***/rootfs/boot" -cpf - . | xz -T0 > "${NOOBS_DIR***REMOVED***/boot.tar.xz"
 umount "${STAGE_WORK_DIR***REMOVED***/rootfs/boot"
 bsdtar --numeric-owner --format gnutar -C "${STAGE_WORK_DIR***REMOVED***/rootfs" --one-file-system -cpf - . | xz -T0 > "${NOOBS_DIR***REMOVED***/root.tar.xz"
+
+if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+	rm "$ROOTFS_DIR/etc/systemd/system/multi-user.target.wants/apply_noobs_os_config.service"
+fi
 
 unmount_image "${IMG_FILE***REMOVED***"

@@ -1,4 +1,5 @@
 ***REMOVED***u
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]***REMOVED***" )" >/dev/null 2>&1 && pwd )"
 
 BUILD_OPTS="$*"
@@ -87,6 +88,9 @@ ${DOCKER***REMOVED*** build --build-arg BASE_IMAGE=${BASE_IMAGE***REMOVED*** -t 
 if [ "${CONTAINER_EXISTS***REMOVED***" != "" ]; then
 	trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${CONTAINER_NAME***REMOVED***_cont' SIGINT SIGTERM
 	time ${DOCKER***REMOVED*** run --rm --privileged \
+		--cap-add=ALL \
+		-v /dev:/dev \
+		-v /lib/modules:/lib/modules \
 		--volume "${CONFIG_FILE***REMOVED***":/config:ro \
 		-e "GIT_HASH=${GIT_HASH***REMOVED***" \
 		--volumes-from="${CONTAINER_NAME***REMOVED***" --name "${CONTAINER_NAME***REMOVED***_cont" \
@@ -98,6 +102,9 @@ if [ "${CONTAINER_EXISTS***REMOVED***" != "" ]; then
 else
 	trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${CONTAINER_NAME***REMOVED***' SIGINT SIGTERM
 	time ${DOCKER***REMOVED*** run --name "${CONTAINER_NAME***REMOVED***" --privileged \
+		--cap-add=ALL \
+		-v /dev:/dev \
+		-v /lib/modules:/lib/modules \
 		--volume "${CONFIG_FILE***REMOVED***":/config:ro \
 		-e "GIT_HASH=${GIT_HASH***REMOVED***" \
 		pi-gen \
@@ -106,6 +113,7 @@ else
 	rsync -av work/*/build.log deploy/" &
 	wait "$!"
 fi
+
 echo "copying results from deploy/"
 ${DOCKER***REMOVED*** cp "${CONTAINER_NAME***REMOVED***":/pi-gen/deploy .
 ls -lah deploy

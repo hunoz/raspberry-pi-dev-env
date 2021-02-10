@@ -1,4 +1,5 @@
 ***REMOVED***
+
 # shellcheck disable=SC2119
 run_sub_stage()
 {
@@ -13,7 +14,7 @@ $(cat "${i***REMOVED***-debconf")
 SEL***REMOVED***
 ***REMOVED***
 
-		log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-debconf"
+			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-debconf"
 		fi
 		if [ -f "${i***REMOVED***-packages-nr" ]; then
 			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages-nr"
@@ -22,6 +23,11 @@ SEL***REMOVED***
 				on_chroot << ***REMOVED***
 apt-get -o APT::Acquire::Retries=3 install --no-install-recommends -y $PACKAGES
 ***REMOVED***
+				if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+					on_chroot << ***REMOVED***
+apt-get clean
+***REMOVED***
+				fi
 			fi
 			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages-nr"
 		fi
@@ -32,6 +38,11 @@ apt-get -o APT::Acquire::Retries=3 install --no-install-recommends -y $PACKAGES
 				on_chroot << ***REMOVED***
 apt-get -o APT::Acquire::Retries=3 install -y $PACKAGES
 ***REMOVED***
+				if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+					on_chroot << ***REMOVED***
+apt-get clean
+***REMOVED***
+				fi
 			fi
 			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages"
 		fi
@@ -82,17 +93,30 @@ apt-get -o APT::Acquire::Retries=3 install -y $PACKAGES
 run_stage(){
 	log "Begin ${STAGE_DIR***REMOVED***"
 	STAGE="$(basename "${STAGE_DIR***REMOVED***")"
+
 	pushd "${STAGE_DIR***REMOVED***" > /dev/null
-	unmount "${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
+
 	STAGE_WORK_DIR="${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
 	ROOTFS_DIR="${STAGE_WORK_DIR***REMOVED***"/rootfs
+
+	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then 
+		if [ ! -f SKIP ]; then
+			load_qimage
+		fi
+	else
+		# make sure we are not umounting during export-image stage
+		if [ "${USE_QCOW2***REMOVED***" = "0" ] && [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
+			unmount "${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
+		fi
+	fi
+	
 	if [ ! -f SKIP_IMAGES ]; then
 		if [ -f "${STAGE_DIR***REMOVED***/EXPORT_IMAGE" ]; then
 			EXPORT_DIRS="${EXPORT_DIRS***REMOVED*** ${STAGE_DIR***REMOVED***"
 		fi
 	fi
 	if [ ! -f SKIP ]; then
-		if [ "${CLEAN***REMOVED***" = "1" ]; then
+		if [ "${CLEAN***REMOVED***" = "1" ] && [ "${USE_QCOW2***REMOVED***" = "0" ] ; then
 			if [ -d "${ROOTFS_DIR***REMOVED***" ]; then
 				rm -rf "${ROOTFS_DIR***REMOVED***"
 			fi
@@ -103,13 +127,21 @@ run_stage(){
 			log "End ${STAGE_DIR***REMOVED***/prerun.sh"
 		fi
 		for SUB_STAGE_DIR in "${STAGE_DIR***REMOVED***"/*; do
-			if [ -d "${SUB_STAGE_DIR***REMOVED***" ] &&
-			   [ ! -f "${SUB_STAGE_DIR***REMOVED***/SKIP" ]; then
+			if [ -d "${SUB_STAGE_DIR***REMOVED***" ] && [ ! -f "${SUB_STAGE_DIR***REMOVED***/SKIP" ]; then
 				run_sub_stage
 			fi
 		done
 	fi
-	unmount "${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
+
+	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then 
+		unload_qimage
+	else
+		# make sure we are not umounting during export-image stage
+		if [ "${USE_QCOW2***REMOVED***" = "0" ] && [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
+			unmount "${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
+		fi
+	fi
+
 	PREV_STAGE="${STAGE***REMOVED***"
 	PREV_STAGE_DIR="${STAGE_DIR***REMOVED***"
 	PREV_ROOTFS_DIR="${ROOTFS_DIR***REMOVED***"
@@ -142,6 +174,15 @@ do
 			;;
 	esac
 done
+
+term() {
+	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+		log "Unloading image"
+		unload_qimage
+	fi
+***REMOVED***
+
+trap term EXIT INT TERM
 
 export PI_GEN=${PI_GEN:-pi-gen***REMOVED***
 export PI_GEN_REPO=${PI_GEN_REPO:-https://github.com/RPi-Distro/pi-gen***REMOVED***
@@ -211,6 +252,18 @@ source "${SCRIPT_DIR***REMOVED***/common"
 # shellcheck source=scripts/dependencies_check
 source "${SCRIPT_DIR***REMOVED***/dependencies_check"
 
+export NO_PRERUN_QCOW2="${NO_PRERUN_QCOW2:-1***REMOVED***"
+export USE_QCOW2="${USE_QCOW2:-1***REMOVED***"
+export BASE_QCOW2_SIZE=${BASE_QCOW2_SIZE:-12G***REMOVED***
+source "${SCRIPT_DIR***REMOVED***/qcow2_handling"
+if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+	NO_PRERUN_QCOW2=1
+else
+	NO_PRERUN_QCOW2=0
+fi
+
+export NO_PRERUN_QCOW2="${NO_PRERUN_QCOW2:-1***REMOVED***"
+
 dependencies_check "${BASE_DIR***REMOVED***/depends"
 
 #check username is valid
@@ -250,22 +303,98 @@ for EXPORT_DIR in ${EXPORT_DIRS***REMOVED***; do
 	# shellcheck source=/dev/null
 	source "${EXPORT_DIR***REMOVED***/EXPORT_IMAGE"
 	EXPORT_ROOTFS_DIR=${WORK_DIR***REMOVED***/$(basename "${EXPORT_DIR***REMOVED***")/rootfs
-	run_stage
+	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+		USE_QCOW2=0
+		EXPORT_NAME="${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***"
+		echo "------------------------------------------------------------------------"
+		echo "Running export stage for ${EXPORT_NAME***REMOVED***"
+		rm -f "${WORK_DIR***REMOVED***/export-image/${EXPORT_NAME***REMOVED***.img" || true
+		rm -f "${WORK_DIR***REMOVED***/export-image/${EXPORT_NAME***REMOVED***.qcow2" || true
+		rm -f "${WORK_DIR***REMOVED***/${EXPORT_NAME***REMOVED***.img" || true
+		rm -f "${WORK_DIR***REMOVED***/${EXPORT_NAME***REMOVED***.qcow2" || true
+		EXPORT_STAGE=$(basename "${EXPORT_DIR***REMOVED***")
+		for s in $STAGE_LIST; do
+			TMP_LIST=${TMP_LIST:+$TMP_LIST ***REMOVED***$(basename "${s***REMOVED***")
+		done
+		FIRST_STAGE=${TMP_LIST%% ****REMOVED***
+		FIRST_IMAGE="image-${FIRST_STAGE***REMOVED***.qcow2"
+
+		pushd "${WORK_DIR***REMOVED***" > /dev/null
+		echo "Creating new base "${EXPORT_NAME***REMOVED***.qcow2" from ${FIRST_IMAGE***REMOVED***"
+		cp "./${FIRST_IMAGE***REMOVED***" "${EXPORT_NAME***REMOVED***.qcow2"
+
+		ARR=($TMP_LIST)
+		# rebase stage images to new export base
+		for CURR_STAGE in "${ARR[@]***REMOVED***"; do
+			if [ "${CURR_STAGE***REMOVED***" = "${FIRST_STAGE***REMOVED***" ]; then
+				PREV_IMG="${EXPORT_NAME***REMOVED***"
+				continue
+			fi
+		echo "Rebasing image-${CURR_STAGE***REMOVED***.qcow2 onto ${PREV_IMG***REMOVED***.qcow2"
+			qemu-img rebase -f qcow2 -u -b ${PREV_IMG***REMOVED***.qcow2 image-${CURR_STAGE***REMOVED***.qcow2
+			if [ "${CURR_STAGE***REMOVED***" = "${EXPORT_STAGE***REMOVED***" ]; then
+				break
+			fi
+			PREV_IMG="image-${CURR_STAGE***REMOVED***"
+		done
+
+		# commit current export stage into base export image
+		echo "Committing image-${EXPORT_STAGE***REMOVED***.qcow2 to ${EXPORT_NAME***REMOVED***.qcow2"
+		qemu-img commit -f qcow2 -p -b "${EXPORT_NAME***REMOVED***.qcow2" image-${EXPORT_STAGE***REMOVED***.qcow2
+
+		# rebase stage images back to original first stage for easy re-run
+		for CURR_STAGE in "${ARR[@]***REMOVED***"; do
+			if [ "${CURR_STAGE***REMOVED***" = "${FIRST_STAGE***REMOVED***" ]; then
+				PREV_IMG="image-${CURR_STAGE***REMOVED***"
+				continue
+			fi
+		echo "Rebasing back image-${CURR_STAGE***REMOVED***.qcow2 onto ${PREV_IMG***REMOVED***.qcow2"
+			qemu-img rebase -f qcow2 -u -b ${PREV_IMG***REMOVED***.qcow2 image-${CURR_STAGE***REMOVED***.qcow2
+			if [ "${CURR_STAGE***REMOVED***" = "${EXPORT_STAGE***REMOVED***" ]; then
+				break
+			fi
+			PREV_IMG="image-${CURR_STAGE***REMOVED***"
+		done
+		popd > /dev/null
+
+		mkdir -p "${WORK_DIR***REMOVED***/export-image/rootfs"
+		mv "${WORK_DIR***REMOVED***/${EXPORT_NAME***REMOVED***.qcow2" "${WORK_DIR***REMOVED***/export-image/"
+		echo "Mounting image ${WORK_DIR***REMOVED***/export-image/${EXPORT_NAME***REMOVED***.qcow2 to rootfs ${WORK_DIR***REMOVED***/export-image/rootfs"
+		mount_qimage "${WORK_DIR***REMOVED***/export-image/${EXPORT_NAME***REMOVED***.qcow2" "${WORK_DIR***REMOVED***/export-image/rootfs"
+
+		CLEAN=0
+		run_stage
+		CLEAN=1
+		USE_QCOW2=1
+
+	else
+		run_stage
+	fi 
 	if [ "${USE_QEMU***REMOVED***" != "1" ]; then
 		if [ -e "${EXPORT_DIR***REMOVED***/EXPORT_NOOBS" ]; then
 			# shellcheck source=/dev/null
 			source "${EXPORT_DIR***REMOVED***/EXPORT_NOOBS"
 			STAGE_DIR="${BASE_DIR***REMOVED***/export-noobs"
-			run_stage
+			if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+				USE_QCOW2=0
+				run_stage
+				USE_QCOW2=1
+			else
+				run_stage
+			fi
 		fi
 	fi
 done
 
-if [ -x ${BASE_DIR***REMOVED***/postrun.sh ]; then
+if [ -x postrun.sh ]; then
 	log "Begin postrun.sh"
 	cd "${BASE_DIR***REMOVED***"
 	./postrun.sh
 	log "End postrun.sh"
+fi
+
+if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+	unload_qimage
 fi
 
 log "End ${BASE_DIR***REMOVED***"
