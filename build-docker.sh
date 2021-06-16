@@ -91,6 +91,7 @@ if [ "${CONTAINER_EXISTS***REMOVED***" != "" ]; then
 		--cap-add=ALL \
 		-v /dev:/dev \
 		-v /lib/modules:/lib/modules \
+		${PIGEN_DOCKER_OPTS***REMOVED*** \
 		--volume "${CONFIG_FILE***REMOVED***":/config:ro \
 		-e "GIT_HASH=${GIT_HASH***REMOVED***" \
 		--volumes-from="${CONTAINER_NAME***REMOVED***" --name "${CONTAINER_NAME***REMOVED***_cont" \
@@ -105,6 +106,7 @@ else
 		--cap-add=ALL \
 		-v /dev:/dev \
 		-v /lib/modules:/lib/modules \
+		${PIGEN_DOCKER_OPTS***REMOVED*** \
 		--volume "${CONFIG_FILE***REMOVED***":/config:ro \
 		-e "GIT_HASH=${GIT_HASH***REMOVED***" \
 		pi-gen \
