@@ -21,8 +21,10 @@ bootstrap(){
 
 	setarch linux32 capsh --drop=cap_setfcap -- -c "'${BOOTSTRAP_CMD***REMOVED***' $BOOTSTRAP_STR" || true
 
-	if [ -d "$2/debootstrap" ]; then
-		rmdir "$2/debootstrap"
+	if [ -d "$2/debootstrap" ] && ! rmdir "$2/debootstrap"; then
+		cp "$2/debootstrap/debootstrap.log" "${STAGE_WORK_DIR***REMOVED***"
+		log "bootstrap failed: please check ${STAGE_WORK_DIR***REMOVED***/debootstrap.log"
+		return 1
 	fi
 ***REMOVED***
 export -f bootstrap
