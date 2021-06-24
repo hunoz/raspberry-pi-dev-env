@@ -103,10 +103,12 @@ if [ "${UMOUNT***REMOVED***" = "1" ] && [ -z "${MOUNTPOINT***REMOVED***" ]; then
 fi
 
 export NBD_DEV="${NBD_DEV:-/dev/nbd1***REMOVED***"
+export MAP_BOOT_DEV=/dev/mapper/nbd1p1
+export MAP_ROOT_DEV=/dev/mapper/nbd1p2
 source scripts/qcow2_handling
 
 if [ "${MOUNT***REMOVED***" = "1" ]; then
-	mount_qimage "${MOUNTPOINT***REMOVED***" "${IMAGE***REMOVED***"
+	mount_qimage "${IMAGE***REMOVED***" "${MOUNTPOINT***REMOVED***"
 elif [ "${UMOUNT***REMOVED***" = "1" ]; then
 	umount_qimage "${MOUNTPOINT***REMOVED***"
 fi
