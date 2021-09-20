@@ -198,7 +198,7 @@ export IMG_FILENAME="${IMG_FILENAME:-"${IMG_DATE***REMOVED***-${IMG_NAME***REMOV
 export ZIP_FILENAME="${ZIP_FILENAME:-"image_${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
 
 export SCRIPT_DIR="${BASE_DIR***REMOVED***/scripts"
-export WORK_DIR="${WORK_DIR:-"${BASE_DIR***REMOVED***/work/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
+export WORK_DIR="${WORK_DIR:-"${BASE_DIR***REMOVED***/work/${IMG_NAME***REMOVED***"***REMOVED***"
 export DEPLOY_DIR=${DEPLOY_DIR:-"${BASE_DIR***REMOVED***/deploy"***REMOVED***
 export DEPLOY_ZIP="${DEPLOY_ZIP:-1***REMOVED***"
 export LOG_FILE="${WORK_DIR***REMOVED***/build.log"

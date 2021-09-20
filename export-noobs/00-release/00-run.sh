@@ -1,6 +1,6 @@
 ***REMOVED***
 
-NOOBS_DIR="${STAGE_WORK_DIR***REMOVED***/${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***"
+NOOBS_DIR="${STAGE_WORK_DIR***REMOVED***/${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***"
 
 install -v -m 744	files/partition_setup.sh	"${NOOBS_DIR***REMOVED***/"
 install -v		files/partitions.json		"${NOOBS_DIR***REMOVED***/"
