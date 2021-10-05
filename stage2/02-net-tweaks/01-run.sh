@@ -1,10 +1,11 @@
 ***REMOVED***
 
-install -v -d					"${ROOTFS_DIR***REMOVED***/etc/systemd/system/dhcpcd.service.d"
-install -v -m 644 files/wait.conf		"${ROOTFS_DIR***REMOVED***/etc/systemd/system/dhcpcd.service.d/"
-
 install -v -d					"${ROOTFS_DIR***REMOVED***/etc/wpa_supplicant"
 install -v -m 600 files/wpa_supplicant.conf	"${ROOTFS_DIR***REMOVED***/etc/wpa_supplicant/"
+
+on_chroot << ***REMOVED***
+	SUDO_USER="${FIRST_USER_NAME***REMOVED***" raspi-config nonint do_boot_wait 0
+***REMOVED***
 
 if [ -v WPA_COUNTRY ]; then
 	echo "country=${WPA_COUNTRY***REMOVED***" >> "${ROOTFS_DIR***REMOVED***/etc/wpa_supplicant/wpa_supplicant.conf"
