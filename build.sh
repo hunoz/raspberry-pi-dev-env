@@ -99,7 +99,7 @@ run_stage(){
 	STAGE_WORK_DIR="${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
 	ROOTFS_DIR="${STAGE_WORK_DIR***REMOVED***"/rootfs
 
-	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then 
+	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
 		if [ ! -f SKIP ]; then
 			load_qimage
 		fi
@@ -109,7 +109,7 @@ run_stage(){
 			unmount "${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
 		fi
 	fi
-	
+
 	if [ ! -f SKIP_IMAGES ]; then
 		if [ -f "${STAGE_DIR***REMOVED***/EXPORT_IMAGE" ]; then
 			EXPORT_DIRS="${EXPORT_DIRS***REMOVED*** ${STAGE_DIR***REMOVED***"
@@ -253,7 +253,7 @@ source "${SCRIPT_DIR***REMOVED***/common"
 source "${SCRIPT_DIR***REMOVED***/dependencies_check"
 
 export NO_PRERUN_QCOW2="${NO_PRERUN_QCOW2:-1***REMOVED***"
-export USE_QCOW2="${USE_QCOW2:-1***REMOVED***"
+export USE_QCOW2="${USE_QCOW2:-0***REMOVED***"
 export BASE_QCOW2_SIZE=${BASE_QCOW2_SIZE:-12G***REMOVED***
 source "${SCRIPT_DIR***REMOVED***/qcow2_handling"
 if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
