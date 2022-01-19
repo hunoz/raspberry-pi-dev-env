@@ -98,6 +98,8 @@ if [ "${CONTAINER_EXISTS***REMOVED***" != "" ]; then
 		--volumes-from="${CONTAINER_NAME***REMOVED***" --name "${CONTAINER_NAME***REMOVED***_cont" \
 		pi-gen \
 		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
+	# binfmt_misc is sometimes not mounted with debian bullseye image
+	(mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc || true) &&
 	cd /pi-gen; ./build.sh ${BUILD_OPTS***REMOVED*** &&
 	rsync -av work/*/build.log deploy/" &
 	wait "$!"
@@ -112,6 +114,8 @@ else
 		-e "GIT_HASH=${GIT_HASH***REMOVED***" \
 		pi-gen \
 		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
+	# binfmt_misc is sometimes not mounted with debian bullseye image
+	(mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc || true) &&
 	cd /pi-gen; ./build.sh ${BUILD_OPTS***REMOVED*** &&
 	rsync -av work/*/build.log deploy/" &
 	wait "$!"
