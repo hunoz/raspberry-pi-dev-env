@@ -133,7 +133,7 @@ run_stage(){
 		done
 	fi
 
-	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then 
+	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
 		unload_qimage
 	else
 		# make sure we are not umounting during export-image stage
@@ -369,7 +369,7 @@ for EXPORT_DIR in ${EXPORT_DIRS***REMOVED***; do
 
 	else
 		run_stage
-	fi 
+	fi
 	if [ "${USE_QEMU***REMOVED***" != "1" ]; then
 		if [ -e "${EXPORT_DIR***REMOVED***/EXPORT_NOOBS" ]; then
 			# shellcheck source=/dev/null
