@@ -203,12 +203,22 @@ fi
 export USE_QEMU="${USE_QEMU:-0***REMOVED***"
 export IMG_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"***REMOVED***"
 export IMG_FILENAME="${IMG_FILENAME:-"${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
-export ZIP_FILENAME="${ZIP_FILENAME:-"image_${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
+export ARCHIVE_FILENAME="${ARCHIVE_FILENAME:-"image_${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
 
 export SCRIPT_DIR="${BASE_DIR***REMOVED***/scripts"
 export WORK_DIR="${WORK_DIR:-"${BASE_DIR***REMOVED***/work/${IMG_NAME***REMOVED***"***REMOVED***"
 export DEPLOY_DIR=${DEPLOY_DIR:-"${BASE_DIR***REMOVED***/deploy"***REMOVED***
-export DEPLOY_ZIP="${DEPLOY_ZIP:-1***REMOVED***"
+
+# DEPLOY_ZIP was deprecated in favor of DEPLOY_COMPRESSION
+# This preserve the old behavior with DEPLOY_ZIP=0 where no archive was created
+if [ -z "${DEPLOY_COMPRESSION***REMOVED***" ] && [ "${DEPLOY_ZIP:-1***REMOVED***" = "0" ]; then
+	echo "DEPLOY_ZIP has been deprecated in favor of DEPLOY_COMPRESSION"
+	echo "Similar behavior to DEPLOY_ZIP=0 can be obtained with DEPLOY_COMPRESSION=none"
+	echo "Please update your config file"
+	DEPLOY_COMPRESSION=none
+fi
+export DEPLOY_COMPRESSION=${DEPLOY_COMPRESSION:-zip***REMOVED***
+export COMPRESSION_LEVEL=${COMPRESSION_LEVEL:-6***REMOVED***
 export LOG_FILE="${WORK_DIR***REMOVED***/build.log"
 
 export TARGET_HOSTNAME=${TARGET_HOSTNAME:-raspberrypi***REMOVED***

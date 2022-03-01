@@ -78,7 +78,7 @@ cp "$ROOTFS_DIR/etc/rpi-issue" "$INFO_FILE"
 
 mkdir -p "${DEPLOY_DIR***REMOVED***"
 
-rm -f "${DEPLOY_DIR***REMOVED***/${ZIP_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.zip"
+rm -f "${DEPLOY_DIR***REMOVED***/${ARCHIVE_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.*"
 rm -f "${DEPLOY_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 
 mv "$INFO_FILE" "$DEPLOY_DIR/"
@@ -95,11 +95,22 @@ else
 	make_bootable_image "${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.qcow2" "$IMG_FILE"
 fi
 
-if [ "${DEPLOY_ZIP***REMOVED***" == "1" ]; then
+case "${DEPLOY_COMPRESSION***REMOVED***" in
+zip)
 	pushd "${STAGE_WORK_DIR***REMOVED***" > /dev/null
-	zip "${DEPLOY_DIR***REMOVED***/${ZIP_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.zip" \
-		"$(basename "${IMG_FILE***REMOVED***")"
+	zip -"${COMPRESSION_LEVEL***REMOVED***" \
+	"${DEPLOY_DIR***REMOVED***/${ARCHIVE_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.zip" "$(basename "${IMG_FILE***REMOVED***")"
 	popd > /dev/null
-else
-	mv "$IMG_FILE" "$DEPLOY_DIR/"
-fi
+	;;
+gz)
+	pigz --force -"${COMPRESSION_LEVEL***REMOVED***" "$IMG_FILE" --stdout > \
+	"${DEPLOY_DIR***REMOVED***/${ARCHIVE_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img.gz"
+	;;
+xz)
+	xz --compress --force --threads 0 --memlimit-compress=50% -"${COMPRESSION_LEVEL***REMOVED***" \
+	--stdout "$IMG_FILE" > "${DEPLOY_DIR***REMOVED***/${ARCHIVE_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img.xz"
+	;;
+none | *)
+	cp "$IMG_FILE" "$DEPLOY_DIR/"
+;;
+esac

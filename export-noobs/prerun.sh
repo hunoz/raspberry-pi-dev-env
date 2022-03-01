@@ -3,11 +3,7 @@
 NOOBS_DIR="${STAGE_WORK_DIR***REMOVED***/${IMG_NAME***REMOVED***${IMG_SUFFIX***REMOVED***"
 mkdir -p "${STAGE_WORK_DIR***REMOVED***"
 
-if [ "${DEPLOY_ZIP***REMOVED***" == "1" ]; then
-	IMG_FILE="${WORK_DIR***REMOVED***/export-image/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
-else
-	IMG_FILE="${DEPLOY_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
-fi
+IMG_FILE="${WORK_DIR***REMOVED***/export-image/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 
 unmount_image "${IMG_FILE***REMOVED***"
 
