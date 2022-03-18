@@ -8,7 +8,10 @@ on_chroot << ***REMOVED***
 if ! id -u ${FIRST_USER_NAME***REMOVED*** >/dev/null 2>&1; then
 	adduser --disabled-password --gecos "" ${FIRST_USER_NAME***REMOVED***
 fi
-echo "${FIRST_USER_NAME***REMOVED***:${FIRST_USER_PASS***REMOVED***" | chpasswd
+
+if [ -n "${FIRST_USER_PASS***REMOVED***" ]; then
+	echo "${FIRST_USER_NAME***REMOVED***:${FIRST_USER_PASS***REMOVED***" | chpasswd
+fi
 echo "root:root" | chpasswd
 ***REMOVED***
 

@@ -224,7 +224,7 @@ export LOG_FILE="${WORK_DIR***REMOVED***/build.log"
 export TARGET_HOSTNAME=${TARGET_HOSTNAME:-raspberrypi***REMOVED***
 
 export FIRST_USER_NAME=${FIRST_USER_NAME:-pi***REMOVED***
-export FIRST_USER_PASS=${FIRST_USER_PASS:-raspberry***REMOVED***
+export FIRST_USER_PASS
 export RELEASE=${RELEASE:-bullseye***REMOVED***
 export WPA_ESSID
 export WPA_PASSWORD
