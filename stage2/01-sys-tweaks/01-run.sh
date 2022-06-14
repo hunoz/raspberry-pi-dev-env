@@ -57,6 +57,10 @@ for GRP in adm dialout cdrom audio users sudo video games plugdev input gpio spi
 done
 ***REMOVED***
 
+if [ -f "${ROOTFS_DIR***REMOVED***/etc/sudoers.d/010_pi-nopasswd" ]; then
+  sed -i "s/^pi /$FIRST_USER_NAME /" "${ROOTFS_DIR***REMOVED***/etc/sudoers.d/010_pi-nopasswd"
+fi
+
 on_chroot << ***REMOVED***
 setupcon --force --save-only -v
 ***REMOVED***
