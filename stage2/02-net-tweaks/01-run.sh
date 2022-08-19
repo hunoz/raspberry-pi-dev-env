@@ -5,6 +5,7 @@ install -v -m 600 files/wpa_supplicant.conf	"${ROOTFS_DIR***REMOVED***/etc/wpa_s
 
 on_chroot << ***REMOVED***
 	SUDO_USER="${FIRST_USER_NAME***REMOVED***" raspi-config nonint do_boot_wait 0
+	SUDO_USER="${FIRST_USER_NAME***REMOVED***" raspi-config nonint do_netconf 1
 ***REMOVED***
 
 if [ -v WPA_COUNTRY ]; then
