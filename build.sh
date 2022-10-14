@@ -21,7 +21,7 @@ SEL***REMOVED***
 			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < "${i***REMOVED***-packages-nr")"
 			if [ -n "$PACKAGES" ]; then
 				on_chroot << ***REMOVED***
-apt-get -o APT::Acquire::Retries=3 install --no-install-recommends -y $PACKAGES
+apt-get -o Acquire::Retries=3 install --no-install-recommends -y $PACKAGES
 ***REMOVED***
 				if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
 					on_chroot << ***REMOVED***
@@ -36,7 +36,7 @@ apt-get clean
 			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < "${i***REMOVED***-packages")"
 			if [ -n "$PACKAGES" ]; then
 				on_chroot << ***REMOVED***
-apt-get -o APT::Acquire::Retries=3 install -y $PACKAGES
+apt-get -o Acquire::Retries=3 install -y $PACKAGES
 ***REMOVED***
 				if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
 					on_chroot << ***REMOVED***
