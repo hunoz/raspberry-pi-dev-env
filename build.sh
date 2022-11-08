@@ -283,6 +283,10 @@ fi
 
 export NO_PRERUN_QCOW2="${NO_PRERUN_QCOW2:-1***REMOVED***"
 
+if [ "$SETFCAP" != "1" ]; then
+	export CAPSH_ARG="--drop=cap_setfcap"
+fi
+
 dependencies_check "${BASE_DIR***REMOVED***/depends"
 
 #check username is valid
