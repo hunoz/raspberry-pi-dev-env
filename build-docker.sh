@@ -126,8 +126,9 @@ else
 	wait "$!"
 fi
 
+# Ensure that deploy/ is always owned by calling user
 echo "copying results from deploy/"
-${DOCKER***REMOVED*** cp "${CONTAINER_NAME***REMOVED***":/pi-gen/deploy .
+${DOCKER***REMOVED*** cp "${CONTAINER_NAME***REMOVED***":/pi-gen/deploy - | tar -xf -
 ls -lah deploy
 
 # cleanup
