@@ -92,39 +92,42 @@ esac
 ${DOCKER***REMOVED*** build --build-arg BASE_IMAGE=${BASE_IMAGE***REMOVED*** -t pi-gen "${DIR***REMOVED***"
 
 if [ "${CONTAINER_EXISTS***REMOVED***" != "" ]; then
-	trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${CONTAINER_NAME***REMOVED***_cont' SIGINT SIGTERM
-	time ${DOCKER***REMOVED*** run --rm --privileged \
-		--cap-add=ALL \
-		-v /dev:/dev \
-		-v /lib/modules:/lib/modules \
-		${PIGEN_DOCKER_OPTS***REMOVED*** \
-		--volume "${CONFIG_FILE***REMOVED***":/config:ro \
-		-e "GIT_HASH=${GIT_HASH***REMOVED***" \
-		--volumes-from="${CONTAINER_NAME***REMOVED***" --name "${CONTAINER_NAME***REMOVED***_cont" \
-		pi-gen \
-		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
-	# binfmt_misc is sometimes not mounted with debian bullseye image
-	(mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc || true) &&
-	cd /pi-gen; ./build.sh ${BUILD_OPTS***REMOVED*** &&
-	rsync -av work/*/build.log deploy/" &
-	wait "$!"
+  DOCKER_CMDLINE_NAME="${CONTAINER_NAME***REMOVED***_cont"
+  DOCKER_CMDLINE_PRE=( \
+    --rm \
+  )
+  DOCKER_CMDLINE_POST=( \
+    --volumes-from="${CONTAINER_NAME***REMOVED***" \
+  )
 else
-	trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${CONTAINER_NAME***REMOVED***' SIGINT SIGTERM
-	time ${DOCKER***REMOVED*** run --name "${CONTAINER_NAME***REMOVED***" --privileged \
-		--cap-add=ALL \
-		-v /dev:/dev \
-		-v /lib/modules:/lib/modules \
-		${PIGEN_DOCKER_OPTS***REMOVED*** \
-		--volume "${CONFIG_FILE***REMOVED***":/config:ro \
-		-e "GIT_HASH=${GIT_HASH***REMOVED***" \
-		pi-gen \
-		bash -e -o pipefail -c "dpkg-reconfigure qemu-user-static &&
-	# binfmt_misc is sometimes not mounted with debian bullseye image
-	(mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc || true) &&
-	cd /pi-gen; ./build.sh ${BUILD_OPTS***REMOVED*** &&
-	rsync -av work/*/build.log deploy/" &
-	wait "$!"
+  DOCKER_CMDLINE_NAME="${CONTAINER_NAME***REMOVED***"
+  DOCKER_CMDLINE_PRE=( \
+  )
+  DOCKER_CMDLINE_POST=( \
+  )
 fi
+
+trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${DOCKER_CMDLINE_NAME***REMOVED***' SIGINT SIGTERM
+time ${DOCKER***REMOVED*** run \
+  "${DOCKER_CMDLINE_PRE[@]***REMOVED***" \
+  --name "${DOCKER_CMDLINE_NAME***REMOVED***" \
+  --privileged \
+  --cap-add=ALL \
+  -v /dev:/dev \
+  -v /lib/modules:/lib/modules \
+  ${PIGEN_DOCKER_OPTS***REMOVED*** \
+  --volume "${CONFIG_FILE***REMOVED***":/config:ro \
+  -e "GIT_HASH=${GIT_HASH***REMOVED***" \
+  "${DOCKER_CMDLINE_POST[@]***REMOVED***" \
+  pi-gen \
+  bash -e -o pipefail -c "
+    dpkg-reconfigure qemu-user-static &&
+    # binfmt_misc is sometimes not mounted with debian bullseye image
+    (mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc || true) &&
+    cd /pi-gen; ./build.sh ${BUILD_OPTS***REMOVED*** &&
+    rsync -av work/*/build.log deploy/
+  " &
+  wait "$!"
 
 # Ensure that deploy/ is always owned by calling user
 echo "copying results from deploy/"
