@@ -107,6 +107,40 @@ else
   )
 fi
 
+# Check if binfmt_misc is required
+binfmt_misc_required=1
+case $(uname -m) in
+  aarch64)
+    binfmt_misc_required=0
+    ;;
+  arm*)
+    binfmt_misc_required=0
+    ;;
+esac
+
+# Check if qemu-arm-static and /proc/sys/fs/binfmt_misc are present
+if [[ "${binfmt_misc_required***REMOVED***" == "1" ]]; then
+  if ! qemu_arm=$(which qemu-arm-static) ; then
+    echo "qemu-arm-static not found (please install qemu-user-static)"
+    exit 1
+***REMOVED***
+  if [ ! -f /proc/sys/fs/binfmt_misc/register ]; then
+    echo "binfmt_misc required but not mounted, trying to mount it..."
+    if ! mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc ; then
+        echo "mounting binfmt_misc failed"
+        exit 1
+  ***REMOVED***
+    echo "binfmt_misc mounted"
+***REMOVED***
+  # Register qemu-arm for binfmt_misc (binfmt_misc won't care duplicate entries unless they have common names)
+  reg="echo ':qemu-arm-rpi:M::"\
+"\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:"\
+"\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:"\
+"$qemu_arm:F' > /proc/sys/fs/binfmt_misc/register"
+  echo "Registering qemu-arm for binfmt_misc..."
+  sudo bash -c "$reg" 2>/dev/null || true
+fi
+
 trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${DOCKER_CMDLINE_NAME***REMOVED***' SIGINT SIGTERM
 time ${DOCKER***REMOVED*** run \
   "${DOCKER_CMDLINE_PRE[@]***REMOVED***" \
