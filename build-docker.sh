@@ -132,13 +132,15 @@ if [[ "${binfmt_misc_required***REMOVED***" == "1" ]]; then
   ***REMOVED***
     echo "binfmt_misc mounted"
 ***REMOVED***
-  # Register qemu-arm for binfmt_misc (binfmt_misc won't care duplicate entries unless they have common names)
-  reg="echo ':qemu-arm-rpi:M::"\
+  if ! grep -q "^interpreter ${qemu_arm***REMOVED***" /proc/sys/fs/binfmt_misc/qemu-arm* ; then
+    # Register qemu-arm for binfmt_misc
+    reg="echo ':qemu-arm-rpi:M::"\
 "\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:"\
 "\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:"\
-"$qemu_arm:F' > /proc/sys/fs/binfmt_misc/register"
-  echo "Registering qemu-arm for binfmt_misc..."
-  sudo bash -c "$reg" 2>/dev/null || true
+"${qemu_arm***REMOVED***:F' > /proc/sys/fs/binfmt_misc/register"
+    echo "Registering qemu-arm for binfmt_misc..."
+    sudo bash -c "${reg***REMOVED***" 2>/dev/null || true
+***REMOVED***
 fi
 
 trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${DOCKER_CMDLINE_NAME***REMOVED***' SIGINT SIGTERM
