@@ -226,7 +226,7 @@ export TARGET_HOSTNAME=${TARGET_HOSTNAME:-raspberrypi***REMOVED***
 export FIRST_USER_NAME=${FIRST_USER_NAME:-pi***REMOVED***
 export FIRST_USER_PASS
 export DISABLE_FIRST_BOOT_USER_RENAME=${DISABLE_FIRST_BOOT_USER_RENAME:-0***REMOVED***
-export RELEASE=${RELEASE:-bullseye***REMOVED*** # Don't forget to update stage0/prerun.sh
+export RELEASE=${RELEASE:-bookworm***REMOVED*** # Don't forget to update stage0/prerun.sh
 export WPA_ESSID
 export WPA_PASSWORD
 export WPA_COUNTRY
