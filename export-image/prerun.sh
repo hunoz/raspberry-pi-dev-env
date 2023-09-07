@@ -10,8 +10,8 @@ if [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
 	rm -rf "${ROOTFS_DIR***REMOVED***"
 	mkdir -p "${ROOTFS_DIR***REMOVED***"
 
-	BOOT_SIZE="$((256 * 1024 * 1024))"
-	ROOT_SIZE=$(du --apparent-size -s "${EXPORT_ROOTFS_DIR***REMOVED***" --exclude var/cache/apt/archives --exclude boot --block-size=1 | cut -f 1)
+	BOOT_SIZE="$((512 * 1024 * 1024))"
+	ROOT_SIZE=$(du --apparent-size -s "${EXPORT_ROOTFS_DIR***REMOVED***" --exclude var/cache/apt/archives --exclude boot/firmware --block-size=1 | cut -f 1)
 
 	# All partition sizes and starts will be aligned to this size
 	ALIGN="$((4 * 1024 * 1024))"
@@ -59,9 +59,9 @@ if [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
 	mkfs.ext4 -L rootfs -O "$ROOT_FEATURES" "$ROOT_DEV" > /dev/null
 
 	mount -v "$ROOT_DEV" "${ROOTFS_DIR***REMOVED***" -t ext4
-	mkdir -p "${ROOTFS_DIR***REMOVED***/boot"
-	mount -v "$BOOT_DEV" "${ROOTFS_DIR***REMOVED***/boot" -t vfat
+	mkdir -p "${ROOTFS_DIR***REMOVED***/boot/firmware"
+	mount -v "$BOOT_DEV" "${ROOTFS_DIR***REMOVED***/boot/firmware" -t vfat
 
-	rsync -aHAXx --exclude /var/cache/apt/archives --exclude /boot "${EXPORT_ROOTFS_DIR***REMOVED***/" "${ROOTFS_DIR***REMOVED***/"
-	rsync -rtx "${EXPORT_ROOTFS_DIR***REMOVED***/boot/" "${ROOTFS_DIR***REMOVED***/boot/"
+	rsync -aHAXx --exclude /var/cache/apt/archives --exclude /boot/firmware "${EXPORT_ROOTFS_DIR***REMOVED***/" "${ROOTFS_DIR***REMOVED***/"
+	rsync -rtx "${EXPORT_ROOTFS_DIR***REMOVED***/boot/firmware/" "${ROOTFS_DIR***REMOVED***/boot/firmware/"
 fi

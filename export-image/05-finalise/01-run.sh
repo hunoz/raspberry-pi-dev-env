@@ -3,7 +3,10 @@
 IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
 INFO_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.info"
 
+sed -i 's/^update_initramfs=.*/update_initramfs=all/' "${ROOTFS_DIR***REMOVED***/etc/initramfs-tools/update-initramfs.conf"
+
 on_chroot << ***REMOVED***
+update-initramfs -u
 if [ -x /etc/init.d/fake-hwclock ]; then
 	/etc/init.d/fake-hwclock stop
 fi
@@ -53,7 +56,7 @@ rm -f "${ROOTFS_DIR***REMOVED***/root/.vnc/private.key"
 rm -f "${ROOTFS_DIR***REMOVED***/etc/vnc/updateid"
 
 update_issue "$(basename "${EXPORT_DIR***REMOVED***")"
-install -m 644 "${ROOTFS_DIR***REMOVED***/etc/rpi-issue" "${ROOTFS_DIR***REMOVED***/boot/issue.txt"
+install -m 644 "${ROOTFS_DIR***REMOVED***/etc/rpi-issue" "${ROOTFS_DIR***REMOVED***/boot/firmware/issue.txt"
 
 cp "$ROOTFS_DIR/etc/rpi-issue" "$INFO_FILE"
 
