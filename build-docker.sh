@@ -1,6 +1,8 @@
-***REMOVED***u
+#!/usr/bin/env bash
+# Note: Avoid usage of arrays as MacOS users have an older version of bash (v3.x) which does not supports arrays
+set -eu
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]***REMOVED***" )" >/dev/null 2>&1 && pwd )"
+DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
 
 BUILD_OPTS="$*"
 
@@ -93,18 +95,12 @@ ${DOCKER***REMOVED*** build --build-arg BASE_IMAGE=${BASE_IMAGE***REMOVED*** -t 
 
 if [ "${CONTAINER_EXISTS***REMOVED***" != "" ]; then
   DOCKER_CMDLINE_NAME="${CONTAINER_NAME***REMOVED***_cont"
-  DOCKER_CMDLINE_PRE=( \
-    --rm \
-  )
-  DOCKER_CMDLINE_POST=( \
-    --volumes-from="${CONTAINER_NAME***REMOVED***" \
-  )
+  DOCKER_CMDLINE_PRE="--rm"
+  DOCKER_CMDLINE_POST="--volumes-from=\"${CONTAINER_NAME***REMOVED***\""
 else
   DOCKER_CMDLINE_NAME="${CONTAINER_NAME***REMOVED***"
-  DOCKER_CMDLINE_PRE=( \
-  )
-  DOCKER_CMDLINE_POST=( \
-  )
+  DOCKER_CMDLINE_PRE=""
+  DOCKER_CMDLINE_POST=""
 fi
 
 # Check if binfmt_misc is required
@@ -145,7 +141,7 @@ fi
 
 trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER***REMOVED*** stop -t 5 ${DOCKER_CMDLINE_NAME***REMOVED***' SIGINT SIGTERM
 time ${DOCKER***REMOVED*** run \
-  "${DOCKER_CMDLINE_PRE[@]***REMOVED***" \
+  $DOCKER_CMDLINE_PRE \
   --name "${DOCKER_CMDLINE_NAME***REMOVED***" \
   --privileged \
   --cap-add=ALL \
@@ -154,7 +150,7 @@ time ${DOCKER***REMOVED*** run \
   ${PIGEN_DOCKER_OPTS***REMOVED*** \
   --volume "${CONFIG_FILE***REMOVED***":/config:ro \
   -e "GIT_HASH=${GIT_HASH***REMOVED***" \
-  "${DOCKER_CMDLINE_POST[@]***REMOVED***" \
+  $DOCKER_CMDLINE_POST \
   pi-gen \
   bash -e -o pipefail -c "
     dpkg-reconfigure qemu-user-static &&
