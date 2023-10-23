@@ -194,6 +194,7 @@ trap term EXIT INT TERM
 
 export PI_GEN=${PI_GEN:-pi-gen***REMOVED***
 export PI_GEN_REPO=${PI_GEN_REPO:-https://github.com/RPi-Distro/pi-gen***REMOVED***
+export PI_GEN_RELEASE=${PI_GEN_RELEASE:-Raspberry Pi reference***REMOVED***
 
 if [ -z "${IMG_NAME***REMOVED***" ]; then
 	echo "IMG_NAME not set" 1>&2
