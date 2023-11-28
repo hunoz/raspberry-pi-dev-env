@@ -1,0 +1,32 @@
+***REMOVED***
+
+nodejs() {
+  # Install NVM to manage Node versions
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+***REMOVED***
+
+python() {
+  rm -rf $HOME/.pyenv
+  # Install pyenv to manage Python versions
+  curl https://pyenv.run | bash
+
+  # Update .bashrc for pyenv
+  echo 'export PYENV_ROOT="$HOME/.pyenv"
+  [ -d $PYENV_ROOT/bin ] && export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"' >> $HOME/.bashrc
+***REMOVED***
+
+java() {
+  # Install SDKMan to manage JDK versions
+  curl -s "https://get.sdkman.io" | bash
+
+  # Update .bashrc for SDKMan
+  source "$HOME/.sdkman/bin/sdkman-init.sh"
+***REMOVED***
+
+golang() {
+  rm -rf $HOME/.gvm
+  # Install GVM to manage Golang versions
+  bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+  echo "source /home/pi/.gvm/scripts/gvm" >> $HOME/.bashrc
+***REMOVED***
