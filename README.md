@@ -1,6 +1,3 @@
-# pi-gen
-This repository uses [pi-gen](https://github.com/RPi-Distro/pi-gen) to create its images. To understand how it operates, please read the documentation on its repository.
-
 # Description
 Sloop is a Raspberry Pi image generator that uses [pi-gen](https://github.com/RPi-Distro/pi-gen) to create its images. Each image is set up with the following configuration:
 * Pyenv, SDKMan, GVM, and nvm are installed to manage environments for Python, Java, Golang, and Node, respectively.
