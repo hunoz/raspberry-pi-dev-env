@@ -1,0 +1,4 @@
+installCodeServer() {
+  curl -fsSL https://code-server.dev/install.sh | sh
+  echo "PATH=\"\$(npm bin -g):\$PATH\"" >> $HOME/.zshrc
+***REMOVED***

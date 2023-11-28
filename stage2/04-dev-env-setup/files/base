@@ -1,5 +1,7 @@
 
 
 installOhMyZsh() {
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  ZSH="sh install.sh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  # Remove this file that ohmyzsh creates
+  rm -rf sh\ install.sh 
 ***REMOVED***

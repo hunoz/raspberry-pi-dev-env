@@ -13,7 +13,8 @@ updateBootConfig
 setupNetwork
 
 # Next, let's set up code-server
-# TODO: This section should install code-server
+installCodeServer
+# TODO: Set up code-server as a service which starts on boot
 
 # Finally, let's install our programming languages
 nodejs
