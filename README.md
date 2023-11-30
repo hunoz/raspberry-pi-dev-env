@@ -15,3 +15,6 @@ When using this image with an iPad, it will have the IP address `11.100.0.1` and
 If you wish to have a wlan0 connection while connected to the iPad, edit the network sections in the file `stage2/dev-env-setup/files/ipad-network`.
 
 To build the image, run `./build.sh -c config`. Once it is complete, it will output a file in `deploy/` with a name similar to `image_$(date +"%Y-%m-%d")-sloop-lite.zip` which can be extracted to obtain the `.img` file which can then be flashed on an SD card using something like [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
+
+# Roadmap
+* Support pulling in custom wlan0 config file
