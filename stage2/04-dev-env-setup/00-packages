@@ -3,3 +3,6 @@ curl
 bison
 dnsmasq
 zsh
+git
+libkrb5-dev
+vim

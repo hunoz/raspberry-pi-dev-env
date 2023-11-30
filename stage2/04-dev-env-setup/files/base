@@ -1,7 +1,22 @@
 
 
 installOhMyZsh() {
-  ZSH="sh install.sh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-  # Remove this file that ohmyzsh creates
-  rm -rf sh\ install.sh 
+  [ -d "${HOME***REMOVED***/.oh-my-zsh" ] && rm -rf "${HOME***REMOVED***/.oh-my-zsh"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+***REMOVED***
+
+configureSsh() {
+  if ! cat /etc/ssh/sshd_config | grep -q 'PermitRootLogin without-password'; then
+    sed -i 's/#PermitRootLogin.*/PermitRootLogin without-password/g' /etc/ssh/sshd_config
+***REMOVED***
+
+  if ! cat /etc/ssh/sshd_config | grep -qE 'Subsystem\s{1,***REMOVED***sftp\s{1,***REMOVED***internal-sftp'; then
+    sed -E 's|.*Subsystem\s{1***REMOVED***sftp\s{1,***REMOVED***/usr/lib/openssh/sftp-server|Subsystem sftp internal-sftp|g' /etc/ssh/sshd_config
+***REMOVED***
+
+  ! [ -d /root/.ssh ] && mkdir -p /root/.ssh
+  ! [ -f /root/.ssh/authorized_keys ] && touch /root/.ssh/authorized_keys
+  if ! cat /root/.ssh/authorized_keys | grep -q 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINoQt56xsLXAVmjDl5Xgr+zPkLV0gZ7iyLpdhucE8K0P'; then
+    echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINoQt56xsLXAVmjDl5Xgr+zPkLV0gZ7iyLpdhucE8K0P" >> /root/.ssh/authorized_keys
+***REMOVED***
 ***REMOVED***
