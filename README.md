@@ -17,6 +17,7 @@ If you wish to have a wlan0 connection while connected to the iPad, edit the net
 To build the image, run `./build.sh -c config`. Once it is complete, it will output a file in `deploy/` with a name similar to `image_$(date +"%Y-%m-%d")-sloop-lite.zip` which can be extracted to obtain the `.img` file which can then be flashed on an SD card using something like [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
 
 # Roadmap
+* Have code-server start as a service on boot
 * Support reading SSH key from variable in config file (`PUBKEY_SSH_FIRST_USER`)
 * Support pulling in custom wlan0 config from variable in config file (`WLAN0_CONFIG`)
   * [This](https://stackoverflow.com/questions/23929235/multi-line-string-with-extra-space-preserved-indentation) shows how we can read the full config from a variable
