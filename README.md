@@ -19,3 +19,4 @@ To build the image, run `./build.sh -c config`. Once it is complete, it will out
 # Roadmap
 * Support reading SSH key from variable in config file (`PUBKEY_SSH_FIRST_USER`)
 * Support pulling in custom wlan0 config from variable in config file (`WLAN0_CONFIG`)
+  * [This](https://stackoverflow.com/questions/23929235/multi-line-string-with-extra-space-preserved-indentation) shows how we can read the full config from a variable
