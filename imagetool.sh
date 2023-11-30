@@ -28,7 +28,7 @@ Usage:
    NBD_DEV=/dev/nbd2 ./$progname --mount --image-name <your image> --mount-point <your path>
 
 HEREDOC
-***REMOVED***
+}
 
 MOUNT=0
 UMOUNT=0
@@ -37,17 +37,17 @@ MOUNTPOINT=""
 
 nbd_cleanup() {
 	DEVS="$(lsblk | grep nbd | grep disk | cut -d" " -f1)"
-	if [ ! -z "${DEVS***REMOVED***" ]; then
+	if [ ! -z "${DEVS}" ]; then
 		for d in $DEVS; do
-			if [ ! -z "${d***REMOVED***" ]; then
+			if [ ! -z "${d}" ]; then
 				QDEV="$(ps xa | grep $d | grep -v grep)"
-				if [ -z "${QDEV***REMOVED***" ]; then
+				if [ -z "${QDEV}" ]; then
 					kpartx -d /dev/$d && echo "Unconnected device map removed: /dev/$d"
 				fi
 			fi
 		done
 	fi
-***REMOVED***
+}
 
 # As long as there is at least one more argument, keep looping
 while [[ $# -gt 0 ]]; do
@@ -84,31 +84,31 @@ while [[ $# -gt 0 ]]; do
 	shift
 done
 
-if [ "${MOUNT***REMOVED***" = "1" ] && [ "${UMOUNT***REMOVED***" = "1" ]; then
+if [ "${MOUNT}" = "1" ] && [ "${UMOUNT}" = "1" ]; then
 	usage
 	echo "Concurrent mount options not possible."
 	exit
 fi
 
-if [ "${MOUNT***REMOVED***" = "1" ] && ([ -z "${IMAGE***REMOVED***"  ] || [ -z "${MOUNTPOINT***REMOVED***"  ]); then
+if [ "${MOUNT}" = "1" ] && ([ -z "${IMAGE}"  ] || [ -z "${MOUNTPOINT}"  ]); then
 	usage
 	echo "Can not mount image. Image path and/or mount point missing."
 	exit
 fi
 
-if [ "${UMOUNT***REMOVED***" = "1" ] && [ -z "${MOUNTPOINT***REMOVED***" ]; then
+if [ "${UMOUNT}" = "1" ] && [ -z "${MOUNTPOINT}" ]; then
 	usage
 	echo "Can not umount. Mount point parameter missing."
 	exit
 fi
 
-export NBD_DEV="${NBD_DEV:-/dev/nbd1***REMOVED***"
+export NBD_DEV="${NBD_DEV:-/dev/nbd1}"
 export MAP_BOOT_DEV=/dev/mapper/nbd1p1
 export MAP_ROOT_DEV=/dev/mapper/nbd1p2
 source scripts/qcow2_handling
 
-if [ "${MOUNT***REMOVED***" = "1" ]; then
-	mount_qimage "${IMAGE***REMOVED***" "${MOUNTPOINT***REMOVED***"
-elif [ "${UMOUNT***REMOVED***" = "1" ]; then
-	umount_qimage "${MOUNTPOINT***REMOVED***"
+if [ "${MOUNT}" = "1" ]; then
+	mount_qimage "${IMAGE}" "${MOUNTPOINT}"
+elif [ "${UMOUNT}" = "1" ]; then
+	umount_qimage "${MOUNTPOINT}"
 fi

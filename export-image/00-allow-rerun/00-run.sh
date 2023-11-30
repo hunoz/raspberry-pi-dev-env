@@ -1,9 +1,9 @@
-***REMOVED***
+#!/bin/bash -e
 
-if [ ! -x "${ROOTFS_DIR***REMOVED***/usr/bin/qemu-arm-static" ]; then
-	cp /usr/bin/qemu-arm-static "${ROOTFS_DIR***REMOVED***/usr/bin/"
+if [ ! -x "${ROOTFS_DIR}/usr/bin/qemu-arm-static" ]; then
+	cp /usr/bin/qemu-arm-static "${ROOTFS_DIR}/usr/bin/"
 fi
 
-if [ -e "${ROOTFS_DIR***REMOVED***/etc/ld.so.preload" ]; then
-	mv "${ROOTFS_DIR***REMOVED***/etc/ld.so.preload" "${ROOTFS_DIR***REMOVED***/etc/ld.so.preload.disabled"
+if [ -e "${ROOTFS_DIR}/etc/ld.so.preload" ]; then
+	mv "${ROOTFS_DIR}/etc/ld.so.preload" "${ROOTFS_DIR}/etc/ld.so.preload.disabled"
 fi

@@ -1,5 +1,5 @@
-***REMOVED***
+#!/bin/bash -e
 
-if [ ! -d "${ROOTFS_DIR***REMOVED***" ]; then
+if [ ! -d "${ROOTFS_DIR}" ]; then
 	copy_previous
 fi

@@ -1,5 +1,5 @@
 
-***REMOVED***
+#!/bin/bash -e
 
 source /root/base
 source /root/ipad-network

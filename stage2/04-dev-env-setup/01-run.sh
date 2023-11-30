@@ -1,5 +1,5 @@
-***REMOVED***
+#!/bin/bash -e
 
-mkdir -p "${ROOTFS_DIR***REMOVED***/root/"
-sudo install -m 644 files/* "${ROOTFS_DIR***REMOVED***/root/"
-sudo chmod +x "${ROOTFS_DIR***REMOVED***/root/usb.sh"
+mkdir -p "${ROOTFS_DIR}/root/"
+sudo install -m 644 files/* "${ROOTFS_DIR}/root/"
+sudo chmod +x "${ROOTFS_DIR}/root/usb.sh"

@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=debian:bullseye
-FROM ${BASE_IMAGE***REMOVED***
+FROM ${BASE_IMAGE}
 
 ENV DEBIAN_FRONTEND noninteractive
 

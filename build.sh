@@ -1,64 +1,64 @@
-***REMOVED***
+#!/bin/bash -e
 
 # shellcheck disable=SC2119
 run_sub_stage()
 {
-	log "Begin ${SUB_STAGE_DIR***REMOVED***"
-	pushd "${SUB_STAGE_DIR***REMOVED***" > /dev/null
-	for i in {00..99***REMOVED***; do
-		if [ -f "${i***REMOVED***-debconf" ]; then
-			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-debconf"
-			on_chroot << ***REMOVED***
-debconf-set-selections <<SEL***REMOVED***
-$(cat "${i***REMOVED***-debconf")
-SEL***REMOVED***
-***REMOVED***
+	log "Begin ${SUB_STAGE_DIR}"
+	pushd "${SUB_STAGE_DIR}" > /dev/null
+	for i in {00..99}; do
+		if [ -f "${i}-debconf" ]; then
+			log "Begin ${SUB_STAGE_DIR}/${i}-debconf"
+			on_chroot << EOF
+debconf-set-selections <<SELEOF
+$(cat "${i}-debconf")
+SELEOF
+EOF
 
-			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-debconf"
+			log "End ${SUB_STAGE_DIR}/${i}-debconf"
 		fi
-		if [ -f "${i***REMOVED***-packages-nr" ]; then
-			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages-nr"
-			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < "${i***REMOVED***-packages-nr")"
+		if [ -f "${i}-packages-nr" ]; then
+			log "Begin ${SUB_STAGE_DIR}/${i}-packages-nr"
+			PACKAGES="$(sed -f "${SCRIPT_DIR}/remove-comments.sed" < "${i}-packages-nr")"
 			if [ -n "$PACKAGES" ]; then
-				on_chroot << ***REMOVED***
+				on_chroot << EOF
 apt-get -o Acquire::Retries=3 install --no-install-recommends -y $PACKAGES
-***REMOVED***
-				if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
-					on_chroot << ***REMOVED***
+EOF
+				if [ "${USE_QCOW2}" = "1" ]; then
+					on_chroot << EOF
 apt-get clean
-***REMOVED***
+EOF
 				fi
 			fi
-			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages-nr"
+			log "End ${SUB_STAGE_DIR}/${i}-packages-nr"
 		fi
-		if [ -f "${i***REMOVED***-packages" ]; then
-			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages"
-			PACKAGES="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < "${i***REMOVED***-packages")"
+		if [ -f "${i}-packages" ]; then
+			log "Begin ${SUB_STAGE_DIR}/${i}-packages"
+			PACKAGES="$(sed -f "${SCRIPT_DIR}/remove-comments.sed" < "${i}-packages")"
 			if [ -n "$PACKAGES" ]; then
-				on_chroot << ***REMOVED***
+				on_chroot << EOF
 apt-get -o Acquire::Retries=3 install -y $PACKAGES
-***REMOVED***
-				if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
-					on_chroot << ***REMOVED***
+EOF
+				if [ "${USE_QCOW2}" = "1" ]; then
+					on_chroot << EOF
 apt-get clean
-***REMOVED***
+EOF
 				fi
 			fi
-			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-packages"
+			log "End ${SUB_STAGE_DIR}/${i}-packages"
 		fi
-		if [ -d "${i***REMOVED***-patches" ]; then
-			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-patches"
-			pushd "${STAGE_WORK_DIR***REMOVED***" > /dev/null
-			if [ "${CLEAN***REMOVED***" = "1" ]; then
+		if [ -d "${i}-patches" ]; then
+			log "Begin ${SUB_STAGE_DIR}/${i}-patches"
+			pushd "${STAGE_WORK_DIR}" > /dev/null
+			if [ "${CLEAN}" = "1" ]; then
 				rm -rf .pc
 				rm -rf ./*-pc
 			fi
-			QUILT_PATCHES="${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-patches"
+			QUILT_PATCHES="${SUB_STAGE_DIR}/${i}-patches"
 			SUB_STAGE_QUILT_PATCH_DIR="$(basename "$SUB_STAGE_DIR")-pc"
 			mkdir -p "$SUB_STAGE_QUILT_PATCH_DIR"
 			ln -snf "$SUB_STAGE_QUILT_PATCH_DIR" .pc
 			quilt upgrade
-			if [ -e "${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-patches/EDIT" ]; then
+			if [ -e "${SUB_STAGE_DIR}/${i}-patches/EDIT" ]; then
 				echo "Dropping into bash to edit patches..."
 				bash
 			fi
@@ -72,89 +72,89 @@ apt-get clean
 					;;
 			esac
 			popd > /dev/null
-			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-patches"
+			log "End ${SUB_STAGE_DIR}/${i}-patches"
 		fi
-		if [ -x ${i***REMOVED***-run.sh ]; then
-			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run.sh"
-			./${i***REMOVED***-run.sh
-			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run.sh"
+		if [ -x ${i}-run.sh ]; then
+			log "Begin ${SUB_STAGE_DIR}/${i}-run.sh"
+			./${i}-run.sh
+			log "End ${SUB_STAGE_DIR}/${i}-run.sh"
 		fi
-		if [ -f ${i***REMOVED***-run-chroot.sh ]; then
-			log "Begin ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run-chroot.sh"
-			on_chroot < ${i***REMOVED***-run-chroot.sh
-			log "End ${SUB_STAGE_DIR***REMOVED***/${i***REMOVED***-run-chroot.sh"
+		if [ -f ${i}-run-chroot.sh ]; then
+			log "Begin ${SUB_STAGE_DIR}/${i}-run-chroot.sh"
+			on_chroot < ${i}-run-chroot.sh
+			log "End ${SUB_STAGE_DIR}/${i}-run-chroot.sh"
 		fi
 	done
 	popd > /dev/null
-	log "End ${SUB_STAGE_DIR***REMOVED***"
-***REMOVED***
+	log "End ${SUB_STAGE_DIR}"
+}
 
 
 run_stage(){
-	log "Begin ${STAGE_DIR***REMOVED***"
-	STAGE="$(basename "${STAGE_DIR***REMOVED***")"
+	log "Begin ${STAGE_DIR}"
+	STAGE="$(basename "${STAGE_DIR}")"
 
-	pushd "${STAGE_DIR***REMOVED***" > /dev/null
+	pushd "${STAGE_DIR}" > /dev/null
 
-	STAGE_WORK_DIR="${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
-	ROOTFS_DIR="${STAGE_WORK_DIR***REMOVED***"/rootfs
+	STAGE_WORK_DIR="${WORK_DIR}/${STAGE}"
+	ROOTFS_DIR="${STAGE_WORK_DIR}"/rootfs
 
-	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+	if [ "${USE_QCOW2}" = "1" ]; then
 		if [ ! -f SKIP ]; then
 			load_qimage
 		fi
 	else
 		# make sure we are not umounting during export-image stage
-		if [ "${USE_QCOW2***REMOVED***" = "0" ] && [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
-			unmount "${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
+		if [ "${USE_QCOW2}" = "0" ] && [ "${NO_PRERUN_QCOW2}" = "0" ]; then
+			unmount "${WORK_DIR}/${STAGE}"
 		fi
 	fi
 
 	if [ ! -f SKIP_IMAGES ]; then
-		if [ -f "${STAGE_DIR***REMOVED***/EXPORT_IMAGE" ]; then
-			EXPORT_DIRS="${EXPORT_DIRS***REMOVED*** ${STAGE_DIR***REMOVED***"
+		if [ -f "${STAGE_DIR}/EXPORT_IMAGE" ]; then
+			EXPORT_DIRS="${EXPORT_DIRS} ${STAGE_DIR}"
 		fi
 	fi
 	if [ ! -f SKIP ]; then
-		if [ "${CLEAN***REMOVED***" = "1" ] && [ "${USE_QCOW2***REMOVED***" = "0" ] ; then
-			if [ -d "${ROOTFS_DIR***REMOVED***" ]; then
-				rm -rf "${ROOTFS_DIR***REMOVED***"
+		if [ "${CLEAN}" = "1" ] && [ "${USE_QCOW2}" = "0" ] ; then
+			if [ -d "${ROOTFS_DIR}" ]; then
+				rm -rf "${ROOTFS_DIR}"
 			fi
 		fi
 		if [ -x prerun.sh ]; then
-			log "Begin ${STAGE_DIR***REMOVED***/prerun.sh"
+			log "Begin ${STAGE_DIR}/prerun.sh"
 			./prerun.sh
-			log "End ${STAGE_DIR***REMOVED***/prerun.sh"
+			log "End ${STAGE_DIR}/prerun.sh"
 		fi
-		for SUB_STAGE_DIR in "${STAGE_DIR***REMOVED***"/*; do
-			if [ -d "${SUB_STAGE_DIR***REMOVED***" ] && [ ! -f "${SUB_STAGE_DIR***REMOVED***/SKIP" ]; then
+		for SUB_STAGE_DIR in "${STAGE_DIR}"/*; do
+			if [ -d "${SUB_STAGE_DIR}" ] && [ ! -f "${SUB_STAGE_DIR}/SKIP" ]; then
 				run_sub_stage
 			fi
 		done
 	fi
 
-	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+	if [ "${USE_QCOW2}" = "1" ]; then
 		unload_qimage
 	else
 		# make sure we are not umounting during export-image stage
-		if [ "${USE_QCOW2***REMOVED***" = "0" ] && [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
-			unmount "${WORK_DIR***REMOVED***/${STAGE***REMOVED***"
+		if [ "${USE_QCOW2}" = "0" ] && [ "${NO_PRERUN_QCOW2}" = "0" ]; then
+			unmount "${WORK_DIR}/${STAGE}"
 		fi
 	fi
 
-	PREV_STAGE="${STAGE***REMOVED***"
-	PREV_STAGE_DIR="${STAGE_DIR***REMOVED***"
-	PREV_ROOTFS_DIR="${ROOTFS_DIR***REMOVED***"
+	PREV_STAGE="${STAGE}"
+	PREV_STAGE_DIR="${STAGE_DIR}"
+	PREV_ROOTFS_DIR="${ROOTFS_DIR}"
 	popd > /dev/null
-	log "End ${STAGE_DIR***REMOVED***"
-***REMOVED***
+	log "End ${STAGE_DIR}"
+}
 
 if [ "$(id -u)" != "0" ]; then
 	echo "Please run as root" 1>&2
 	exit 1
 fi
 
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]***REMOVED***")" && pwd)"
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [[ $BASE_DIR = *" "* ]]; then
 	echo "There is a space in the base path of pi-gen"
@@ -184,62 +184,62 @@ do
 done
 
 term() {
-	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+	if [ "${USE_QCOW2}" = "1" ]; then
 		log "Unloading image"
 		unload_qimage
 	fi
-***REMOVED***
+}
 
 trap term EXIT INT TERM
 
-export PI_GEN=${PI_GEN:-pi-gen***REMOVED***
-export PI_GEN_REPO=${PI_GEN_REPO:-https://github.com/RPi-Distro/pi-gen***REMOVED***
-export PI_GEN_RELEASE=${PI_GEN_RELEASE:-Raspberry Pi reference***REMOVED***
+export PI_GEN=${PI_GEN:-pi-gen}
+export PI_GEN_REPO=${PI_GEN_REPO:-https://github.com/RPi-Distro/pi-gen}
+export PI_GEN_RELEASE=${PI_GEN_RELEASE:-Raspberry Pi reference}
 
-if [ -z "${IMG_NAME***REMOVED***" ]; then
+if [ -z "${IMG_NAME}" ]; then
 	echo "IMG_NAME not set" 1>&2
 	exit 1
 fi
 
-export USE_QEMU="${USE_QEMU:-0***REMOVED***"
-export IMG_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"***REMOVED***"
-export IMG_FILENAME="${IMG_FILENAME:-"${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
-export ARCHIVE_FILENAME="${ARCHIVE_FILENAME:-"image_${IMG_DATE***REMOVED***-${IMG_NAME***REMOVED***"***REMOVED***"
+export USE_QEMU="${USE_QEMU:-0}"
+export IMG_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"}"
+export IMG_FILENAME="${IMG_FILENAME:-"${IMG_DATE}-${IMG_NAME}"}"
+export ARCHIVE_FILENAME="${ARCHIVE_FILENAME:-"image_${IMG_DATE}-${IMG_NAME}"}"
 
-export SCRIPT_DIR="${BASE_DIR***REMOVED***/scripts"
-export WORK_DIR="${WORK_DIR:-"${BASE_DIR***REMOVED***/work/${IMG_NAME***REMOVED***"***REMOVED***"
-export DEPLOY_DIR=${DEPLOY_DIR:-"${BASE_DIR***REMOVED***/deploy"***REMOVED***
+export SCRIPT_DIR="${BASE_DIR}/scripts"
+export WORK_DIR="${WORK_DIR:-"${BASE_DIR}/work/${IMG_NAME}"}"
+export DEPLOY_DIR=${DEPLOY_DIR:-"${BASE_DIR}/deploy"}
 
 # DEPLOY_ZIP was deprecated in favor of DEPLOY_COMPRESSION
 # This preserve the old behavior with DEPLOY_ZIP=0 where no archive was created
-if [ -z "${DEPLOY_COMPRESSION***REMOVED***" ] && [ "${DEPLOY_ZIP:-1***REMOVED***" = "0" ]; then
+if [ -z "${DEPLOY_COMPRESSION}" ] && [ "${DEPLOY_ZIP:-1}" = "0" ]; then
 	echo "DEPLOY_ZIP has been deprecated in favor of DEPLOY_COMPRESSION"
 	echo "Similar behavior to DEPLOY_ZIP=0 can be obtained with DEPLOY_COMPRESSION=none"
 	echo "Please update your config file"
 	DEPLOY_COMPRESSION=none
 fi
-export DEPLOY_COMPRESSION=${DEPLOY_COMPRESSION:-zip***REMOVED***
-export COMPRESSION_LEVEL=${COMPRESSION_LEVEL:-6***REMOVED***
-export LOG_FILE="${WORK_DIR***REMOVED***/build.log"
+export DEPLOY_COMPRESSION=${DEPLOY_COMPRESSION:-zip}
+export COMPRESSION_LEVEL=${COMPRESSION_LEVEL:-6}
+export LOG_FILE="${WORK_DIR}/build.log"
 
-export TARGET_HOSTNAME=${TARGET_HOSTNAME:-raspberrypi***REMOVED***
+export TARGET_HOSTNAME=${TARGET_HOSTNAME:-raspberrypi}
 
-export FIRST_USER_NAME=${FIRST_USER_NAME:-pi***REMOVED***
+export FIRST_USER_NAME=${FIRST_USER_NAME:-pi}
 export FIRST_USER_PASS
-export DISABLE_FIRST_BOOT_USER_RENAME=${DISABLE_FIRST_BOOT_USER_RENAME:-0***REMOVED***
-export RELEASE=${RELEASE:-bookworm***REMOVED*** # Don't forget to update stage0/prerun.sh
+export DISABLE_FIRST_BOOT_USER_RENAME=${DISABLE_FIRST_BOOT_USER_RENAME:-0}
+export RELEASE=${RELEASE:-bookworm} # Don't forget to update stage0/prerun.sh
 export WPA_COUNTRY
-export ENABLE_SSH="${ENABLE_SSH:-0***REMOVED***"
-export PUBKEY_ONLY_SSH="${PUBKEY_ONLY_SSH:-0***REMOVED***"
+export ENABLE_SSH="${ENABLE_SSH:-0}"
+export PUBKEY_ONLY_SSH="${PUBKEY_ONLY_SSH:-0}"
 
-export LOCALE_DEFAULT="${LOCALE_DEFAULT:-en_GB.UTF-8***REMOVED***"
+export LOCALE_DEFAULT="${LOCALE_DEFAULT:-en_GB.UTF-8}"
 
-export KEYBOARD_KEYMAP="${KEYBOARD_KEYMAP:-gb***REMOVED***"
-export KEYBOARD_LAYOUT="${KEYBOARD_LAYOUT:-English (UK)***REMOVED***"
+export KEYBOARD_KEYMAP="${KEYBOARD_KEYMAP:-gb}"
+export KEYBOARD_LAYOUT="${KEYBOARD_LAYOUT:-English (UK)}"
 
-export TIMEZONE_DEFAULT="${TIMEZONE_DEFAULT:-Europe/London***REMOVED***"
+export TIMEZONE_DEFAULT="${TIMEZONE_DEFAULT:-Europe/London}"
 
-export GIT_HASH=${GIT_HASH:-"$(git rev-parse HEAD)"***REMOVED***
+export GIT_HASH=${GIT_HASH:-"$(git rev-parse HEAD)"}
 
 export PUBKEY_SSH_FIRST_USER
 
@@ -266,27 +266,27 @@ export QUILT_NO_DIFF_TIMESTAMPS=1
 export QUILT_REFRESH_ARGS="-p ab"
 
 # shellcheck source=scripts/common
-source "${SCRIPT_DIR***REMOVED***/common"
+source "${SCRIPT_DIR}/common"
 # shellcheck source=scripts/dependencies_check
-source "${SCRIPT_DIR***REMOVED***/dependencies_check"
+source "${SCRIPT_DIR}/dependencies_check"
 
-export NO_PRERUN_QCOW2="${NO_PRERUN_QCOW2:-1***REMOVED***"
-export USE_QCOW2="${USE_QCOW2:-0***REMOVED***"
-export BASE_QCOW2_SIZE=${BASE_QCOW2_SIZE:-12G***REMOVED***
-source "${SCRIPT_DIR***REMOVED***/qcow2_handling"
-if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+export NO_PRERUN_QCOW2="${NO_PRERUN_QCOW2:-1}"
+export USE_QCOW2="${USE_QCOW2:-0}"
+export BASE_QCOW2_SIZE=${BASE_QCOW2_SIZE:-12G}
+source "${SCRIPT_DIR}/qcow2_handling"
+if [ "${USE_QCOW2}" = "1" ]; then
 	NO_PRERUN_QCOW2=1
 else
 	NO_PRERUN_QCOW2=0
 fi
 
-export NO_PRERUN_QCOW2="${NO_PRERUN_QCOW2:-1***REMOVED***"
+export NO_PRERUN_QCOW2="${NO_PRERUN_QCOW2:-1}"
 
 if [ "$SETFCAP" != "1" ]; then
 	export CAPSH_ARG="--drop=cap_setfcap"
 fi
 
-dependencies_check "${BASE_DIR***REMOVED***/depends"
+dependencies_check "${BASE_DIR}/depends"
 
 #check username is valid
 if [[ ! "$FIRST_USER_NAME" =~ ^[a-z][-a-z0-9_]*$ ]]; then
@@ -294,7 +294,7 @@ if [[ ! "$FIRST_USER_NAME" =~ ^[a-z][-a-z0-9_]*$ ]]; then
 	exit 1
 fi
 
-if [[ "$DISABLE_FIRST_BOOT_USER_RENAME" == "1" ]] && [ -z "${FIRST_USER_PASS***REMOVED***" ]; then
+if [[ "$DISABLE_FIRST_BOOT_USER_RENAME" == "1" ]] && [ -z "${FIRST_USER_PASS}" ]; then
 	echo "To disable user rename on first boot, FIRST_USER_PASS needs to be set"
 	echo "Not setting FIRST_USER_PASS makes your system vulnerable and open to cyberattacks"
 	exit 1
@@ -305,95 +305,95 @@ if [[ "$DISABLE_FIRST_BOOT_USER_RENAME" == "1" ]]; then
 	echo "Be advised of the security risks linked to shipping a device with default username/password set."
 fi
 
-if [[ -n "${APT_PROXY***REMOVED***" ]] && ! curl --silent "${APT_PROXY***REMOVED***" >/dev/null ; then
-	echo "Could not reach APT_PROXY server: ${APT_PROXY***REMOVED***"
+if [[ -n "${APT_PROXY}" ]] && ! curl --silent "${APT_PROXY}" >/dev/null ; then
+	echo "Could not reach APT_PROXY server: ${APT_PROXY}"
 	exit 1
 fi
 
-if [[ -n "${WPA_PASSWORD***REMOVED***" && ${#WPA_PASSWORD***REMOVED*** -lt 8 || ${#WPA_PASSWORD***REMOVED*** -gt 63  ]] ; then
+if [[ -n "${WPA_PASSWORD}" && ${#WPA_PASSWORD} -lt 8 || ${#WPA_PASSWORD} -gt 63  ]] ; then
 	echo "WPA_PASSWORD" must be between 8 and 63 characters
 	exit 1
 fi
 
-if [[ "${PUBKEY_ONLY_SSH***REMOVED***" = "1" && -z "${PUBKEY_SSH_FIRST_USER***REMOVED***" ]]; then
+if [[ "${PUBKEY_ONLY_SSH}" = "1" && -z "${PUBKEY_SSH_FIRST_USER}" ]]; then
 	echo "Must set 'PUBKEY_SSH_FIRST_USER' to a valid SSH public key if using PUBKEY_ONLY_SSH"
 	exit 1
 fi
 
-mkdir -p "${WORK_DIR***REMOVED***"
-log "Begin ${BASE_DIR***REMOVED***"
+mkdir -p "${WORK_DIR}"
+log "Begin ${BASE_DIR}"
 
-STAGE_LIST=${STAGE_LIST:-${BASE_DIR***REMOVED***/stage****REMOVED***
+STAGE_LIST=${STAGE_LIST:-${BASE_DIR}/stage*}
 
 for STAGE_DIR in $STAGE_LIST; do
-	STAGE_DIR=$(realpath "${STAGE_DIR***REMOVED***")
+	STAGE_DIR=$(realpath "${STAGE_DIR}")
 	run_stage
 done
 
 CLEAN=1
-for EXPORT_DIR in ${EXPORT_DIRS***REMOVED***; do
-	STAGE_DIR=${BASE_DIR***REMOVED***/export-image
+for EXPORT_DIR in ${EXPORT_DIRS}; do
+	STAGE_DIR=${BASE_DIR}/export-image
 	# shellcheck source=/dev/null
-	source "${EXPORT_DIR***REMOVED***/EXPORT_IMAGE"
-	EXPORT_ROOTFS_DIR=${WORK_DIR***REMOVED***/$(basename "${EXPORT_DIR***REMOVED***")/rootfs
-	if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+	source "${EXPORT_DIR}/EXPORT_IMAGE"
+	EXPORT_ROOTFS_DIR=${WORK_DIR}/$(basename "${EXPORT_DIR}")/rootfs
+	if [ "${USE_QCOW2}" = "1" ]; then
 		USE_QCOW2=0
-		EXPORT_NAME="${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***"
+		EXPORT_NAME="${IMG_FILENAME}${IMG_SUFFIX}"
 		echo "------------------------------------------------------------------------"
-		echo "Running export stage for ${EXPORT_NAME***REMOVED***"
-		rm -f "${WORK_DIR***REMOVED***/export-image/${EXPORT_NAME***REMOVED***.img" || true
-		rm -f "${WORK_DIR***REMOVED***/export-image/${EXPORT_NAME***REMOVED***.qcow2" || true
-		rm -f "${WORK_DIR***REMOVED***/${EXPORT_NAME***REMOVED***.img" || true
-		rm -f "${WORK_DIR***REMOVED***/${EXPORT_NAME***REMOVED***.qcow2" || true
-		EXPORT_STAGE=$(basename "${EXPORT_DIR***REMOVED***")
+		echo "Running export stage for ${EXPORT_NAME}"
+		rm -f "${WORK_DIR}/export-image/${EXPORT_NAME}.img" || true
+		rm -f "${WORK_DIR}/export-image/${EXPORT_NAME}.qcow2" || true
+		rm -f "${WORK_DIR}/${EXPORT_NAME}.img" || true
+		rm -f "${WORK_DIR}/${EXPORT_NAME}.qcow2" || true
+		EXPORT_STAGE=$(basename "${EXPORT_DIR}")
 		for s in $STAGE_LIST; do
-			TMP_LIST=${TMP_LIST:+$TMP_LIST ***REMOVED***$(basename "${s***REMOVED***")
+			TMP_LIST=${TMP_LIST:+$TMP_LIST }$(basename "${s}")
 		done
-		FIRST_STAGE=${TMP_LIST%% ****REMOVED***
-		FIRST_IMAGE="image-${FIRST_STAGE***REMOVED***.qcow2"
+		FIRST_STAGE=${TMP_LIST%% *}
+		FIRST_IMAGE="image-${FIRST_STAGE}.qcow2"
 
-		pushd "${WORK_DIR***REMOVED***" > /dev/null
-		echo "Creating new base "${EXPORT_NAME***REMOVED***.qcow2" from ${FIRST_IMAGE***REMOVED***"
-		cp "./${FIRST_IMAGE***REMOVED***" "${EXPORT_NAME***REMOVED***.qcow2"
+		pushd "${WORK_DIR}" > /dev/null
+		echo "Creating new base "${EXPORT_NAME}.qcow2" from ${FIRST_IMAGE}"
+		cp "./${FIRST_IMAGE}" "${EXPORT_NAME}.qcow2"
 
 		ARR=($TMP_LIST)
 		# rebase stage images to new export base
-		for CURR_STAGE in "${ARR[@]***REMOVED***"; do
-			if [ "${CURR_STAGE***REMOVED***" = "${FIRST_STAGE***REMOVED***" ]; then
-				PREV_IMG="${EXPORT_NAME***REMOVED***"
+		for CURR_STAGE in "${ARR[@]}"; do
+			if [ "${CURR_STAGE}" = "${FIRST_STAGE}" ]; then
+				PREV_IMG="${EXPORT_NAME}"
 				continue
 			fi
-		echo "Rebasing image-${CURR_STAGE***REMOVED***.qcow2 onto ${PREV_IMG***REMOVED***.qcow2"
-			qemu-img rebase -f qcow2 -u -b ${PREV_IMG***REMOVED***.qcow2 image-${CURR_STAGE***REMOVED***.qcow2
-			if [ "${CURR_STAGE***REMOVED***" = "${EXPORT_STAGE***REMOVED***" ]; then
+		echo "Rebasing image-${CURR_STAGE}.qcow2 onto ${PREV_IMG}.qcow2"
+			qemu-img rebase -f qcow2 -u -b ${PREV_IMG}.qcow2 image-${CURR_STAGE}.qcow2
+			if [ "${CURR_STAGE}" = "${EXPORT_STAGE}" ]; then
 				break
 			fi
-			PREV_IMG="image-${CURR_STAGE***REMOVED***"
+			PREV_IMG="image-${CURR_STAGE}"
 		done
 
 		# commit current export stage into base export image
-		echo "Committing image-${EXPORT_STAGE***REMOVED***.qcow2 to ${EXPORT_NAME***REMOVED***.qcow2"
-		qemu-img commit -f qcow2 -p -b "${EXPORT_NAME***REMOVED***.qcow2" image-${EXPORT_STAGE***REMOVED***.qcow2
+		echo "Committing image-${EXPORT_STAGE}.qcow2 to ${EXPORT_NAME}.qcow2"
+		qemu-img commit -f qcow2 -p -b "${EXPORT_NAME}.qcow2" image-${EXPORT_STAGE}.qcow2
 
 		# rebase stage images back to original first stage for easy re-run
-		for CURR_STAGE in "${ARR[@]***REMOVED***"; do
-			if [ "${CURR_STAGE***REMOVED***" = "${FIRST_STAGE***REMOVED***" ]; then
-				PREV_IMG="image-${CURR_STAGE***REMOVED***"
+		for CURR_STAGE in "${ARR[@]}"; do
+			if [ "${CURR_STAGE}" = "${FIRST_STAGE}" ]; then
+				PREV_IMG="image-${CURR_STAGE}"
 				continue
 			fi
-		echo "Rebasing back image-${CURR_STAGE***REMOVED***.qcow2 onto ${PREV_IMG***REMOVED***.qcow2"
-			qemu-img rebase -f qcow2 -u -b ${PREV_IMG***REMOVED***.qcow2 image-${CURR_STAGE***REMOVED***.qcow2
-			if [ "${CURR_STAGE***REMOVED***" = "${EXPORT_STAGE***REMOVED***" ]; then
+		echo "Rebasing back image-${CURR_STAGE}.qcow2 onto ${PREV_IMG}.qcow2"
+			qemu-img rebase -f qcow2 -u -b ${PREV_IMG}.qcow2 image-${CURR_STAGE}.qcow2
+			if [ "${CURR_STAGE}" = "${EXPORT_STAGE}" ]; then
 				break
 			fi
-			PREV_IMG="image-${CURR_STAGE***REMOVED***"
+			PREV_IMG="image-${CURR_STAGE}"
 		done
 		popd > /dev/null
 
-		mkdir -p "${WORK_DIR***REMOVED***/export-image/rootfs"
-		mv "${WORK_DIR***REMOVED***/${EXPORT_NAME***REMOVED***.qcow2" "${WORK_DIR***REMOVED***/export-image/"
-		echo "Mounting image ${WORK_DIR***REMOVED***/export-image/${EXPORT_NAME***REMOVED***.qcow2 to rootfs ${WORK_DIR***REMOVED***/export-image/rootfs"
-		mount_qimage "${WORK_DIR***REMOVED***/export-image/${EXPORT_NAME***REMOVED***.qcow2" "${WORK_DIR***REMOVED***/export-image/rootfs"
+		mkdir -p "${WORK_DIR}/export-image/rootfs"
+		mv "${WORK_DIR}/${EXPORT_NAME}.qcow2" "${WORK_DIR}/export-image/"
+		echo "Mounting image ${WORK_DIR}/export-image/${EXPORT_NAME}.qcow2 to rootfs ${WORK_DIR}/export-image/rootfs"
+		mount_qimage "${WORK_DIR}/export-image/${EXPORT_NAME}.qcow2" "${WORK_DIR}/export-image/rootfs"
 
 		CLEAN=0
 		run_stage
@@ -403,12 +403,12 @@ for EXPORT_DIR in ${EXPORT_DIRS***REMOVED***; do
 	else
 		run_stage
 	fi
-	if [ "${USE_QEMU***REMOVED***" != "1" ]; then
-		if [ -e "${EXPORT_DIR***REMOVED***/EXPORT_NOOBS" ]; then
+	if [ "${USE_QEMU}" != "1" ]; then
+		if [ -e "${EXPORT_DIR}/EXPORT_NOOBS" ]; then
 			# shellcheck source=/dev/null
-			source "${EXPORT_DIR***REMOVED***/EXPORT_NOOBS"
-			STAGE_DIR="${BASE_DIR***REMOVED***/export-noobs"
-			if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+			source "${EXPORT_DIR}/EXPORT_NOOBS"
+			STAGE_DIR="${BASE_DIR}/export-noobs"
+			if [ "${USE_QCOW2}" = "1" ]; then
 				USE_QCOW2=0
 				run_stage
 				USE_QCOW2=1
@@ -421,13 +421,13 @@ done
 
 if [ -x postrun.sh ]; then
 	log "Begin postrun.sh"
-	cd "${BASE_DIR***REMOVED***"
+	cd "${BASE_DIR}"
 	./postrun.sh
 	log "End postrun.sh"
 fi
 
-if [ "${USE_QCOW2***REMOVED***" = "1" ]; then
+if [ "${USE_QCOW2}" = "1" ]; then
 	unload_qimage
 fi
 
-log "End ${BASE_DIR***REMOVED***"
+log "End ${BASE_DIR}"

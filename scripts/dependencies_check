@@ -10,12 +10,12 @@ dependencies_check()
 
 	for depfile in "$@"; do
 		if [[ -e "$depfile" ]]; then
-			deps="$(sed -f "${SCRIPT_DIR***REMOVED***/remove-comments.sed" < "${BASE_DIR***REMOVED***/depends")"
+			deps="$(sed -f "${SCRIPT_DIR}/remove-comments.sed" < "${BASE_DIR}/depends")"
 
 		fi
 		for dep in $deps; do
-			if ! hash "${dep%:****REMOVED***" 2>/dev/null; then
-				missing="${missing:+$missing ***REMOVED***${dep#*:***REMOVED***"
+			if ! hash "${dep%:*}" 2>/dev/null; then
+				missing="${missing:+$missing }${dep#*:}"
 			fi
 		done
 	done
@@ -42,7 +42,7 @@ dependencies_check()
 			;;
 	esac
 
-	if [[ "${binfmt_misc_required***REMOVED***" == "1" ]]; then
+	if [[ "${binfmt_misc_required}" == "1" ]]; then
 		if ! grep -q "/proc/sys/fs/binfmt_misc" /proc/mounts; then
 			echo "Module binfmt_misc not loaded in host"
 			echo "Please run:"
@@ -50,4 +50,4 @@ dependencies_check()
 			exit 1
 		fi
 	fi
-***REMOVED***
+}

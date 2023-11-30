@@ -1,5 +1,5 @@
-***REMOVED***
+#!/bin/bash -e
 
-on_chroot <<***REMOVED***
+on_chroot <<EOF
 adduser "$FIRST_USER_NAME" lpadmin
-***REMOVED***
+EOF

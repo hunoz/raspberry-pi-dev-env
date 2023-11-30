@@ -1,40 +1,40 @@
 log (){
-	date +"[%T] $*" | tee -a "${LOG_FILE***REMOVED***"
-***REMOVED***
+	date +"[%T] $*" | tee -a "${LOG_FILE}"
+}
 export -f log
 
 bootstrap(){
 	local BOOTSTRAP_CMD=debootstrap
 	local BOOTSTRAP_ARGS=()
 
-	export http_proxy=${APT_PROXY***REMOVED***
+	export http_proxy=${APT_PROXY}
 
 	BOOTSTRAP_ARGS+=(--arch armhf)
 	BOOTSTRAP_ARGS+=(--components "main,contrib,non-free")
-	BOOTSTRAP_ARGS+=(--keyring "${STAGE_DIR***REMOVED***/files/raspberrypi.gpg")
+	BOOTSTRAP_ARGS+=(--keyring "${STAGE_DIR}/files/raspberrypi.gpg")
 	BOOTSTRAP_ARGS+=(--exclude=info)
 	BOOTSTRAP_ARGS+=(--include=ca-certificates)
 	BOOTSTRAP_ARGS+=("$@")
-	printf -v BOOTSTRAP_STR '%q ' "${BOOTSTRAP_ARGS[@]***REMOVED***"
+	printf -v BOOTSTRAP_STR '%q ' "${BOOTSTRAP_ARGS[@]}"
 
-	setarch linux32 capsh $CAPSH_ARG -- -c "'${BOOTSTRAP_CMD***REMOVED***' $BOOTSTRAP_STR" || true
+	setarch linux32 capsh $CAPSH_ARG -- -c "'${BOOTSTRAP_CMD}' $BOOTSTRAP_STR" || true
 
 	if [ -d "$2/debootstrap" ] && ! rmdir "$2/debootstrap"; then
-		cp "$2/debootstrap/debootstrap.log" "${STAGE_WORK_DIR***REMOVED***"
-		log "bootstrap failed: please check ${STAGE_WORK_DIR***REMOVED***/debootstrap.log"
+		cp "$2/debootstrap/debootstrap.log" "${STAGE_WORK_DIR}"
+		log "bootstrap failed: please check ${STAGE_WORK_DIR}/debootstrap.log"
 		return 1
 	fi
-***REMOVED***
+}
 export -f bootstrap
 
 copy_previous(){
-	if [ ! -d "${PREV_ROOTFS_DIR***REMOVED***" ]; then
+	if [ ! -d "${PREV_ROOTFS_DIR}" ]; then
 		echo "Previous stage rootfs not found"
 		false
 	fi
-	mkdir -p "${ROOTFS_DIR***REMOVED***"
-	rsync -aHAXx --exclude var/cache/apt/archives "${PREV_ROOTFS_DIR***REMOVED***/" "${ROOTFS_DIR***REMOVED***/"
-***REMOVED***
+	mkdir -p "${ROOTFS_DIR}"
+	rsync -aHAXx --exclude var/cache/apt/archives "${PREV_ROOTFS_DIR}/" "${ROOTFS_DIR}/"
+}
 export -f copy_previous
 
 unmount(){
@@ -51,7 +51,7 @@ unmount(){
 			umount "$loc"
 		done
 	done
-***REMOVED***
+}
 export -f unmount
 
 unmount_image(){
@@ -66,41 +66,41 @@ unmount_image(){
 		done
 		losetup -d "$LOOP_DEVICE"
 	fi
-***REMOVED***
+}
 export -f unmount_image
 
 on_chroot() {
-	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/proc)"; then
-		mount -t proc proc "${ROOTFS_DIR***REMOVED***/proc"
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/proc)"; then
+		mount -t proc proc "${ROOTFS_DIR}/proc"
 	fi
 
-	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/dev)"; then
-		mount --bind /dev "${ROOTFS_DIR***REMOVED***/dev"
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/dev)"; then
+		mount --bind /dev "${ROOTFS_DIR}/dev"
 	fi
 	
-	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/dev/pts)"; then
-		mount --bind /dev/pts "${ROOTFS_DIR***REMOVED***/dev/pts"
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/dev/pts)"; then
+		mount --bind /dev/pts "${ROOTFS_DIR}/dev/pts"
 	fi
 
-	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/sys)"; then
-		mount --bind /sys "${ROOTFS_DIR***REMOVED***/sys"
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/sys)"; then
+		mount --bind /sys "${ROOTFS_DIR}/sys"
 	fi
 
-	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/run)"; then
-		mount -t tmpfs  tmpfs "${ROOTFS_DIR***REMOVED***/run"
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/run)"; then
+		mount -t tmpfs  tmpfs "${ROOTFS_DIR}/run"
 	fi
 
-	if ! mount | grep -q "$(realpath "${ROOTFS_DIR***REMOVED***"/tmp)"; then
-		mount -t tmpfs  tmpfs "${ROOTFS_DIR***REMOVED***/tmp"
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/tmp)"; then
+		mount -t tmpfs  tmpfs "${ROOTFS_DIR}/tmp"
 	fi
 
-	setarch linux32 capsh $CAPSH_ARG "--chroot=${ROOTFS_DIR***REMOVED***/" -- -e "$@"
-***REMOVED***
+	setarch linux32 capsh $CAPSH_ARG "--chroot=${ROOTFS_DIR}/" -- -e "$@"
+}
 export -f on_chroot
 
 update_issue() {
-	echo -e "${PI_GEN_RELEASE***REMOVED*** ${IMG_DATE***REMOVED***\nGenerated using ${PI_GEN***REMOVED***, ${PI_GEN_REPO***REMOVED***, ${GIT_HASH***REMOVED***, ${1***REMOVED***" > "${ROOTFS_DIR***REMOVED***/etc/rpi-issue"
-***REMOVED***
+	echo -e "${PI_GEN_RELEASE} ${IMG_DATE}\nGenerated using ${PI_GEN}, ${PI_GEN_REPO}, ${GIT_HASH}, ${1}" > "${ROOTFS_DIR}/etc/rpi-issue"
+}
 export -f update_issue
 
 ensure_next_loopdev() {
@@ -108,5 +108,5 @@ ensure_next_loopdev() {
 	loopdev="$(losetup -f)"
 	loopmaj="$(echo "$loopdev" | sed -E 's/.*[^0-9]*?([0-9]+)$/\1/')"
 	[[ -b "$loopdev" ]] || mknod "$loopdev" b 7 "$loopmaj"
-***REMOVED***
+}
 export -f ensure_next_loopdev

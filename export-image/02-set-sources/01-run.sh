@@ -1,9 +1,9 @@
-***REMOVED***
+#!/bin/bash -e
 
-rm -f "${ROOTFS_DIR***REMOVED***/etc/apt/apt.conf.d/51cache"
-find "${ROOTFS_DIR***REMOVED***/var/lib/apt/lists/" -type f -delete
-on_chroot << ***REMOVED***
+rm -f "${ROOTFS_DIR}/etc/apt/apt.conf.d/51cache"
+find "${ROOTFS_DIR}/var/lib/apt/lists/" -type f -delete
+on_chroot << EOF
 apt-get update
 apt-get -y dist-upgrade --auto-remove --purge
 apt-get clean
-***REMOVED***
+EOF

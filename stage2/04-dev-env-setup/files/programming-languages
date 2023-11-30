@@ -1,4 +1,4 @@
-***REMOVED***
+#!/bin/bash -e
 
 nodejs() {
   # Install NVM to manage Node versions
@@ -7,10 +7,10 @@ nodejs() {
     echo 'export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> /root/.zshrc
-***REMOVED***
+  fi
   cat /root/.zshrc
   zsh -c "source /root/.zshrc; nvm install --lts"
-***REMOVED***
+}
 
 python() {
   # Install pyenv to manage Python versions
@@ -22,17 +22,17 @@ python() {
     echo 'export PYENV_ROOT="$HOME/.pyenv"
     [ -d $PYENV_ROOT/bin ] && export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"' >> /root/.zshrc
-***REMOVED***
+  fi
 
   if ! cat /root/.zshrc | grep -q 'eval "$(pyenv virtualenv-init -)"'; then
     echo 'eval "$(pyenv virtualenv-init -)"' >> /root/.zshrc
-***REMOVED***
-***REMOVED***
+  fi
+}
 
 java() {
   # Install SDKMan to manage JDK versions
   curl -s "https://get.sdkman.io" | bash || true
-***REMOVED***
+}
 
 golang() {
   # Install GVM to manage Golang versions
@@ -41,5 +41,5 @@ golang() {
 
   if ! cat /root/.zshrc | grep -q 'source \$HOME/.gvm/scripts/gvm'; then
     echo "source \$HOME/.gvm/scripts/gvm" >> /root/.zshrc
-***REMOVED***
-***REMOVED***
+  fi
+}

@@ -1,17 +1,17 @@
-***REMOVED***
+#!/bin/bash -e
 
-if [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
-	IMG_FILE="${STAGE_WORK_DIR***REMOVED***/${IMG_FILENAME***REMOVED***${IMG_SUFFIX***REMOVED***.img"
+if [ "${NO_PRERUN_QCOW2}" = "0" ]; then
+	IMG_FILE="${STAGE_WORK_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.img"
 
-	unmount_image "${IMG_FILE***REMOVED***"
+	unmount_image "${IMG_FILE}"
 
-	rm -f "${IMG_FILE***REMOVED***"
+	rm -f "${IMG_FILE}"
 
-	rm -rf "${ROOTFS_DIR***REMOVED***"
-	mkdir -p "${ROOTFS_DIR***REMOVED***"
+	rm -rf "${ROOTFS_DIR}"
+	mkdir -p "${ROOTFS_DIR}"
 
 	BOOT_SIZE="$((512 * 1024 * 1024))"
-	ROOT_SIZE=$(du --apparent-size -s "${EXPORT_ROOTFS_DIR***REMOVED***" --exclude var/cache/apt/archives --exclude boot/firmware --block-size=1 | cut -f 1)
+	ROOT_SIZE=$(du --apparent-size -s "${EXPORT_ROOTFS_DIR}" --exclude var/cache/apt/archives --exclude boot/firmware --block-size=1 | cut -f 1)
 
 	# All partition sizes and starts will be aligned to this size
 	ALIGN="$((4 * 1024 * 1024))"
@@ -27,11 +27,11 @@ if [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
 	ROOT_PART_SIZE=$(((ROOT_SIZE + ROOT_MARGIN + ALIGN  - 1) / ALIGN * ALIGN))
 	IMG_SIZE=$((BOOT_PART_START + BOOT_PART_SIZE + ROOT_PART_SIZE))
 
-	truncate -s "${IMG_SIZE***REMOVED***" "${IMG_FILE***REMOVED***"
+	truncate -s "${IMG_SIZE}" "${IMG_FILE}"
 
-	parted --script "${IMG_FILE***REMOVED***" mklabel msdos
-	parted --script "${IMG_FILE***REMOVED***" unit B mkpart primary fat32 "${BOOT_PART_START***REMOVED***" "$((BOOT_PART_START + BOOT_PART_SIZE - 1))"
-	parted --script "${IMG_FILE***REMOVED***" unit B mkpart primary ext4 "${ROOT_PART_START***REMOVED***" "$((ROOT_PART_START + ROOT_PART_SIZE - 1))"
+	parted --script "${IMG_FILE}" mklabel msdos
+	parted --script "${IMG_FILE}" unit B mkpart primary fat32 "${BOOT_PART_START}" "$((BOOT_PART_START + BOOT_PART_SIZE - 1))"
+	parted --script "${IMG_FILE}" unit B mkpart primary ext4 "${ROOT_PART_START}" "$((ROOT_PART_START + ROOT_PART_SIZE - 1))"
 
 	echo "Creating loop device..."
 	cnt=0
@@ -46,8 +46,8 @@ if [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
 		fi
 	done
 
-	BOOT_DEV="${LOOP_DEV***REMOVED***p1"
-	ROOT_DEV="${LOOP_DEV***REMOVED***p2"
+	BOOT_DEV="${LOOP_DEV}p1"
+	ROOT_DEV="${LOOP_DEV}p2"
 
 	ROOT_FEATURES="^huge_file"
 	for FEATURE in 64bit; do
@@ -58,10 +58,10 @@ if [ "${NO_PRERUN_QCOW2***REMOVED***" = "0" ]; then
 	mkdosfs -n bootfs -F 32 -s 4 -v "$BOOT_DEV" > /dev/null
 	mkfs.ext4 -L rootfs -O "$ROOT_FEATURES" "$ROOT_DEV" > /dev/null
 
-	mount -v "$ROOT_DEV" "${ROOTFS_DIR***REMOVED***" -t ext4
-	mkdir -p "${ROOTFS_DIR***REMOVED***/boot/firmware"
-	mount -v "$BOOT_DEV" "${ROOTFS_DIR***REMOVED***/boot/firmware" -t vfat
+	mount -v "$ROOT_DEV" "${ROOTFS_DIR}" -t ext4
+	mkdir -p "${ROOTFS_DIR}/boot/firmware"
+	mount -v "$BOOT_DEV" "${ROOTFS_DIR}/boot/firmware" -t vfat
 
-	rsync -aHAXx --exclude /var/cache/apt/archives --exclude /boot/firmware "${EXPORT_ROOTFS_DIR***REMOVED***/" "${ROOTFS_DIR***REMOVED***/"
-	rsync -rtx "${EXPORT_ROOTFS_DIR***REMOVED***/boot/firmware/" "${ROOTFS_DIR***REMOVED***/boot/firmware/"
+	rsync -aHAXx --exclude /var/cache/apt/archives --exclude /boot/firmware "${EXPORT_ROOTFS_DIR}/" "${ROOTFS_DIR}/"
+	rsync -rtx "${EXPORT_ROOTFS_DIR}/boot/firmware/" "${ROOTFS_DIR}/boot/firmware/"
 fi

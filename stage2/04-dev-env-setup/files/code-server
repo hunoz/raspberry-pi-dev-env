@@ -1,4 +1,4 @@
 installCodeServer() {
   zsh -c "source /root/.zshrc; nvm install 18.19.0; curl -fsSL https://code-server.dev/install.sh | bash"
   echo "PATH=\"\$(npm bin -g):\$PATH\"" >> /root/.zshrc
-***REMOVED***
+}
