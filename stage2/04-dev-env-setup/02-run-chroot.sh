@@ -1,10 +1,17 @@
 
 #!/bin/bash -e
 
-source /root/base
-source /root/ipad-network
-source /root/code-server
-source /root/programming-languages
+if ! [ -d /sloop ]; then
+  echo "ERROR: Sloop directory not found"
+  exit 1
+fi
+
+[ -f /sloop/config ] && source /sloop/config
+
+source /sloop/base
+source /sloop/ipad-network
+source /sloop/code-server
+source /sloop/programming-languages
 
 # First, let's run base setup
 echo "************* Configuring SSH *************"

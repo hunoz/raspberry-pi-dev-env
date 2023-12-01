@@ -5,6 +5,7 @@ postrun.sh
 stage0/SKIP
 stage1/SKIP
 SKIP_IMAGES
+wpa_supplicant-wlan0.conf
 .pc
 *-pc
 apt-cacher-ng/

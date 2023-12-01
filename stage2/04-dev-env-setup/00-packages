@@ -6,3 +6,9 @@ zsh
 git
 libkrb5-dev
 vim
+
+# Required for iPhone tethering 
+usbmuxd
+gvfs
+ipheth-utils
+libimobiledevice-utils

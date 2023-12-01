@@ -1,22 +1,60 @@
 
 
 installOhMyZsh() {
-  [ -d "${HOME}/.oh-my-zsh" ] && rm -rf "${HOME}/.oh-my-zsh"
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  [ -d "${USER_HOME}/.oh-my-zsh" ] && rm -rf "${USER_HOME}/.oh-my-zsh"
+  sudo -u "$FIRST_USER_NAME" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  chsh -s /bin/zsh "$FIRST_USER_NAME"
+  sudo -u "$FIRST_USER_NAME" sh -c "chsh -s /usr/bin/zsh"
 }
 
 configureSsh() {
-  if ! cat /etc/ssh/sshd_config | grep -q 'PermitRootLogin without-password'; then
-    sed -i 's/#PermitRootLogin.*/PermitRootLogin without-password/g' /etc/ssh/sshd_config
+  if [ "$PUBKEY_ONLY_SSH" = "1" ]; then
+    if cat /etc/ssh/sshd_config | grep -q 'ChallengeResponseAuthentication'; then
+      sed -i 's/^(#?)ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/g' /etc/ssh/sshd_config
+    else
+      echo "ChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
+    fi
+
+    if cat /etc/ssh/sshd_config | grep -q 'PasswordAuthentication'; then
+      sed -i 's/^(#?)PasswordAuthentication.*/PasswordAuthentication no/g' /etc/ssh/sshd_config
+    else
+      echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
+    fi
+
+    if cat /etc/ssh/sshd_config | grep -q 'UsePAM'; then
+      sed -i 's/^(#?)UsePAM.*/UsePAM no/g' /etc/ssh/sshd_config
+    else
+      echo "UsePAM no" >> /etc/ssh/sshd_config
+    fi
+
+    if cat /etc/ssh/sshd_config | grep -q 'PermitRootLogin'; then
+      sed -i 's/^(#?)PermitRootLogin.*/PermitRootLogin without-password/g' /etc/ssh/sshd_config
+    else
+      echo "PermitRootLogin without-password" /etc/ssh/sshd_config
+    fi
+  else
+    if cat /etc/ssh/sshd_config | grep -q 'PasswordAuthentication'; then
+      sed -i 's/^(#?)PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+    else
+      echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+    fi
+
+    if cat /etc/ssh/sshd_config | grep -q 'PermitRootLogin'; then
+      sed -i 's/^(#?)PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config
+    else
+      echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+    fi
   fi
 
   if ! cat /etc/ssh/sshd_config | grep -qE 'Subsystem\s{1,}sftp\s{1,}internal-sftp'; then
-    sed -E 's|.*Subsystem\s{1}sftp\s{1,}/usr/lib/openssh/sftp-server|Subsystem sftp internal-sftp|g' /etc/ssh/sshd_config
+    sed -iE 's|^(#?)Subsystem\s{1}sftp\s{1,}/usr/lib/openssh/sftp-server|Subsystem sftp internal-sftp|g' /etc/ssh/sshd_config
   fi
 
-  ! [ -d /root/.ssh ] && mkdir -p /root/.ssh
-  ! [ -f /root/.ssh/authorized_keys ] && touch /root/.ssh/authorized_keys
-  if ! cat /root/.ssh/authorized_keys | grep -q 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINoQt56xsLXAVmjDl5Xgr+zPkLV0gZ7iyLpdhucE8K0P'; then
-    echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINoQt56xsLXAVmjDl5Xgr+zPkLV0gZ7iyLpdhucE8K0P" >> /root/.ssh/authorized_keys
+  ! [ -d "${USER_HOME}/.ssh" ] && mkdir -p "${USER_HOME}/.ssh"
+  if ! [ -z "$PUBKEY_SSH_FIRST_USER" ]; then
+    ! [ -f "${USER_HOME}/.ssh/authorized_keys" ] && touch "${USER_HOME}/.ssh/authorized_keys"
+    if ! cat "${USER_HOME}/.ssh/authorized_keys" | grep -q "$PUBKEY_SSH_FIRST_USER"; then
+      echo "$PUBKEY_SSH_FIRST_USER" >> "${USER_HOME}/.ssh/authorized_keys"
+    fi
   fi
 }
