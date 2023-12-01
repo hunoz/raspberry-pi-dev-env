@@ -14,6 +14,8 @@ This package must be used in a debian environment (preferrably on a Raspberry Pi
 
 When using this image with an iPad, it will have the IP address `11.100.0.1` and the iPad will obtain an IP within the range of `11.100.0.2` - `11.100.0.6`. These IP addresses were chosen as they are incredibly unlikely to conflict with any other used IP address ranges.
 
+To use this image and connect to an iPhone via USB tethering, just connect it to a USB port and ensure your hotspot is on. `eth1` will automatically pull an IP address via DHCP which will allow you network connectivity.
+
 To configure the wlan0 connection, place a file in `stage2/04-dev-env-setup/files` with the name `wpa_supplicant-wlan0.conf` with a configuration that looks like the below example. As a note, if your SSID comes from an Apple device and contains an apostrophe, you will need to change the SSID in the example below to replace any apostrophes in the SSID with `\xE2\x80\x99`. Example is in the section below.
 ```
 network={
