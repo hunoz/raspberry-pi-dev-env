@@ -12,7 +12,7 @@ Sloop is a Raspberry Pi image generator that uses [pi-gen](https://github.com/RP
 * Syncthing configured to serve code-server workspace (`/workspace`, can be changed by specifying -w option), accessible at http://127.0.0.1:8384
 
 # Usage
-This package must be used in a debian environment (preferrably on a Raspberry Pi to ensure build consistency). To understand the available options, run `./build.sh -h` to see the options. Either `-p` (publickey) or `-s` (password) must be specified.
+This package must be used in a debian environment (preferrably on a Raspberry Pi to ensure build consistency). To understand the available options, run `./build.sh -h` to see the options. Either `-p` (publickey) or `-s` (password) must be specified. By default, password auth over SSH is disabled, specify the `-o` option to allow password auth for SSH.
 
 All files in `stage2/04-dev-env-setup/files` are copied into `/sloop` in the image, so if you have any custom files that you need to reference in a config, such as SSL certificates for code-server, reference them in `/sloop`.
 
