@@ -9,7 +9,7 @@ PUBKEY=""
 TIMEZONE="Etc/UTC"
 USERNAME="root"
 USER_PASS=""
-PUBKEY_ONLY_SSH=1
+PUBKEY_ONLY_SSH="true"
 CODE_SERVER_WORKSPACE="/workspace"
 
 display_usage() {
@@ -21,7 +21,7 @@ Usage: $(basename $0) [OPTIONS...] [ -p | -s ]
         (default: $CONFIG_PATH)
   -i: The name to give the image. Affects end result filename
         (default: $IMG_NAME)
-  -o: If specified, will set SSH to only allow publickey authentication. Options: [0, 1]
+  -o: If specified, will set SSH to allow password authentication
         (default: $PUBKEY_ONLY_SSH)
   -p: The public key to authorize for connections to the configured user. If not set, -s must be set
         (default: ${PUBKEY:-\"\"})
@@ -44,7 +44,7 @@ do
     a) TARGET_HOSTNAME="$OPTARG";;
     c) CONFIG_PATH="$OPTARG";;
     i) IMG_NAME="$OPTARG";;
-    o) PUBKEY_ONLY_SSH=1;;
+    o) PUBKEY_ONLY_SSH="false";;
     p) PUBKEY="$OPTARG";;
     s) USER_PASS="$OPTARG";;
     t) TIMEZONE="$OPTARG";;
@@ -60,11 +60,6 @@ CONFIG_PATH=$(dirname "$CONFIG_PATH")/$(basename "$CONFIG_PATH")
 
 if [ -z "$PUBKEY" ] && [ -z "$USER_PASS" ] && ! ( cat "$CONFIG_PATH" | grep -q 'PUBKEY_SSH_FIRST_USER' || cat "$CONFIG" | grep -q 'FIRST_USER_PASS' ); then
   echo "One of -p (public key) or -s (password) must be specified"
-  exit 1
-fi
-
-if [ "$PUBKEY_ONLY_SSH" != "0" ] && [ "$PUBKEY_ONLY_SSH" != "1" ]; then
-  echo "Invalid value for -o. Valid options are 0 (false) and 1 (true)"
   exit 1
 fi
 
@@ -127,10 +122,12 @@ else
   fi
 fi
 
+RESTRICTED_SSH=1
+[ "$PUBKEY_ONLY_SSH" = "false" ] && RESTRICTED_SSH=0
 if cat "$CONFIG_PATH" | grep -q 'PUBKEY_ONLY_SSH'; then
-  sed -i "s/PUBKEY_ONLY_SSH=.*/PUBKEY_ONLY_SSH=$PUBKEY_ONLY_SSH/g" "$CONFIG_PATH"
+  sed -i "s/PUBKEY_ONLY_SSH=.*/PUBKEY_ONLY_SSH=$RESTRICTED_SSH/g" "$CONFIG_PATH"
 else
-  echo "PUBKEY_ONLY_SSH=$PUBKEY_ONLY_SSH" >> "$CONFIG_PATH"
+  echo "PUBKEY_ONLY_SSH=$RESTRICTED_SSH" >> "$CONFIG_PATH"
 fi
 
 if cat "$CONFIG_PATH" | grep -q 'TIMEZONE_DEFAULT'; then
