@@ -8,10 +8,11 @@ fi
 
 [ -f /sloop/config ] && source /sloop/config
 
-source /sloop/base
-source /sloop/ipad-network
-source /sloop/code-server
-source /sloop/programming-languages
+source /sloop/base.sh
+source /sloop/ipad-network.sh
+source /sloop/code-server.sh
+source /sloop/syncthing.sh
+source /sloop/programming-languages.sh
 
 # First, let's run base setup
 echo "************* Configuring SSH *************"
@@ -38,7 +39,9 @@ echo "************* Installing Code Server *************"
 installCodeServer
 echo "************* Completed Code Server Installation *************"
 echo ""
-# TODO: Set up code-server as a service which starts on boot
+echo "************* Installing Syncthing *************"
+installSyncthing
+echo "************* Completed Syncthing Installation *************"
 
 # Finally, let's install our remaining programming languages
 echo "************* Installing Python *************"
