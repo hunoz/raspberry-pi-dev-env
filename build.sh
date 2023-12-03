@@ -58,7 +58,7 @@ done
 # Sanitize the config path to make sure it's a filepath
 CONFIG_PATH=$(dirname "$CONFIG_PATH")/$(basename "$CONFIG_PATH")
 
-if [ -z "$PUBKEY" ] && [ -z "$USER_PASS" ] && ! ( cat "$CONFIG_PATH" | grep -q 'PUBKEY_SSH_FIRST_USER' || cat "$CONFIG" | grep -q 'FIRST_USER_PASS' ); then
+if [ -z "$PUBKEY" ] && [ -z "$USER_PASS" ] && ! ( cat "$CONFIG_PATH" | grep -q 'PUBKEY_SSH_FIRST_USER' || cat "$CONFIG_PATH" | grep -q 'FIRST_USER_PASS' ); then
   echo "One of -p (public key) or -s (password) must be specified"
   exit 1
 fi
@@ -104,10 +104,6 @@ if ! [ -z "$PUBKEY" ]; then
   else
     echo "PUBKEY_SSH_FIRST_USER=\"$PUBKEY\"" >> "$CONFIG_PATH"
   fi
-else
-  if cat "$CONFIG_PATH" | grep -q 'PUBKEY_SSH_FIRST_USER'; then
-    sed -i "s${SED_DELIMITER}PUBKEY_SSH_FIRST_USER=.*${SED_DELIMITER}${SED_DELIMITER}g" "${CONFIG_PATH}"
-  fi
 fi
 
 if ! [ -z "$USER_PASS" ]; then
@@ -115,10 +111,6 @@ if ! [ -z "$USER_PASS" ]; then
     sed -i "s${SED_DELIMITER}FIRST_USER_PASS=.*${SED_DELIMITER}FIRST_USER_PASS=\"$USER_PASS\"${SED_DELIMITER}g" "$CONFIG_PATH"
   else
     echo "FIRST_USER_PASS=\"$USER_PASS\"" >> "$CONFIG_PATH"
-  fi
-else
-  if cat "$CONFIG_PATH" | grep -q 'FIRST_USER_PASS'; then
-    sed -i "s${SED_DELIMITER}FIRST_USER_PASS.*${SED_DELIMITER}${SED_DELIMITER}g" "$CONFIG_PATH"
   fi
 fi
 
