@@ -3,9 +3,6 @@ createSyncthingConfigFile() {
 <configuration version=\"37\">
     <folder id=\"rwskx-aerm6\" label=\"Workspace\" path=\"$CODE_SERVER_WORKSPACE\" type=\"sendreceive\" rescanIntervalS=\"3600\" fsWatcherEnabled=\"true\" fsWatcherDelayS=\"10\" ignorePerms=\"false\" autoNormalize=\"true\">
         <filesystemType>basic</filesystemType>
-        <device id=\"U2WM3TH-R5YKKS7-XERD33A-VODZPH3-FLA7YEQ-G7VETZ4-XZY3IXH-XRTBQAA\" introducedBy=\"\">
-            <encryptionPassword></encryptionPassword>
-        </device>
         <minDiskFree unit=\"%\">1</minDiskFree>
         <versioning>
             <cleanupIntervalS>3600</cleanupIntervalS>
@@ -42,17 +39,6 @@ createSyncthingConfigFile() {
             <maxTotalSize>4096</maxTotalSize>
         </xattrFilter>
     </folder>
-    <device id=\"U2WM3TH-R5YKKS7-XERD33A-VODZPH3-FLA7YEQ-G7VETZ4-XZY3IXH-XRTBQAA\" name=\"$TARGET_HOSTNAME\" compression=\"metadata\" introducer=\"false\" skipIntroductionRemovals=\"false\" introducedBy=\"\">
-        <address>dynamic</address>
-        <paused>false</paused>
-        <autoAcceptFolders>false</autoAcceptFolders>
-        <maxSendKbps>0</maxSendKbps>
-        <maxRecvKbps>0</maxRecvKbps>
-        <maxRequestKiB>0</maxRequestKiB>
-        <untrusted>false</untrusted>
-        <remoteGUIPort>0</remoteGUIPort>
-        <numConnections>0</numConnections>
-    </device>
     <gui enabled=\"true\" tls=\"false\" debugging=\"false\" sendBasicAuthPrompt=\"false\">
         <address>127.0.0.1:8384</address>
         <theme>default</theme>
