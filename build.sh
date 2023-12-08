@@ -58,6 +58,11 @@ done
 # Sanitize the config path to make sure it's a filepath
 CONFIG_PATH=$(dirname "$CONFIG_PATH")/$(basename "$CONFIG_PATH")
 
+if ! [ -f "$CONFIG_PATH" ]; then
+  mkdir -p $(dirname "$CONFIG_PATH")
+  touch "$CONFIG_PATH"
+fi
+
 if [ -z "$PUBKEY" ] && [ -z "$USER_PASS" ] && ! ( cat "$CONFIG_PATH" | grep -q 'PUBKEY_SSH_FIRST_USER' || cat "$CONFIG_PATH" | grep -q 'FIRST_USER_PASS' ); then
   echo "One of -p (public key) or -s (password) must be specified"
   exit 1
