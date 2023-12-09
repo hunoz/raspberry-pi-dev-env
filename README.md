@@ -42,6 +42,13 @@ network={
 }
 ```
 
+## Caveats
+### Programming Languages
+#### Golang
+* When using Golang/GVM, you need to run `gvm install <VERSION> -B` so that it installs from the binary source
+* The image is pre-configured for this, but you must set `GOHOSTARCH` and `GOARCH` to `arm` to run and build for your local environment
+
+
 To build the image, run `./build.sh -c <CONFIG_PATH>` with the required arguments if you specified a config path. If you did not specify a config path, run `./build.sh` with the required arguments. Once it is complete, it will output a file in `deploy/` with a name similar to `image_$(date +"%Y-%m-%d")-sloop-lite.zip` which can be extracted to obtain the `.img` file which can then be flashed on an SD card using something like [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
 
 # Roadmap
